@@ -26,5 +26,7 @@ Users can adjust black-hole mass and observation distance to see how decoherence
 Released under the **MIT License** — see the [`LICENSE`](./LICENSE) file for details.
 
 ---
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17289395.svg)](https://doi.org/10.5281/zenodo.17289395)
+
 
 *Project developed for the IRIS National Science Fair 2025.*
