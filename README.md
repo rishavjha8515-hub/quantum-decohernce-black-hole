@@ -1,6 +1,6 @@
 # QUANTUMDECOHERENCE  
 **Interactive Educational Simulation of Quantum Decoherence Near Black Holes**  
-
+![Alt](https://repobeats.axiom.co/api/embed/ec48b5fd76a7330914e4e57303f02df457c00153.svg "Repobeats analytics image")
 Developed by **Rishav Anand Kumar Jha**  
 Institution: *Shri L. R. Tiwari College of Science, Commerce and Arts*  
 Category: *Computational Physics – Educational Technology*
