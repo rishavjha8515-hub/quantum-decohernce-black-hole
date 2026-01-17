@@ -292,6 +292,32 @@
             background: rgba(0,245,255,0.2);
         }
         
+        .methodology-panel {
+            background: rgba(78, 205, 196, 0.1);
+            border-left: 4px solid #4ecdc4;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+        }
+        
+        .methodology-panel h3 {
+            color: #4ecdc4;
+            margin-bottom: 1rem;
+        }
+        
+        .limitations-panel {
+            background: rgba(255, 107, 107, 0.1);
+            border-left: 4px solid #ff6b6b;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+        }
+        
+        .limitations-panel h3 {
+            color: #ff6b6b;
+            margin-bottom: 1rem;
+        }
+        
         @media (max-width: 1200px) {
             .main-grid {
                 grid-template-columns: 1fr;
@@ -427,13 +453,46 @@
                     <div style="text-align: center; margin-top: 0.5rem; font-weight: 600; font-family: 'Courier New', monospace;">
                         <span id="coh-pct">100.0</span>% Coherent
                     </div>
+                <div class="panel" style="margin-top: 1.5rem;">
+                    <h4 style="color: #4ecdc4; text-align: center; margin-bottom: 1rem;">Visual Legend</h4>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.05);"><span style="color: #00f5ff;">●</span> Blue particles: Coherent quantum states</li>
+                        <li style="padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.05);"><span style="color: #ff4757;">●</span> Red particles: Decoherent (classical) states</li>
+                        <li style="padding: 0.5rem 0;"><span style="color: #fff;">●</span> White ring: Hawking radiation emission</li>
+                    </ul>
                 </div>
             </div>
+        </div>
+        
+        <div class="methodology-panel">
+            <h3>Theoretical Methodology - PHYSICS-CONNECTED MODEL</h3>
+            <p><strong>Scaling Law Justifications:</strong></p>
+            <ul style="margin-left: 1.5rem; line-height: 1.8;">
+                <li><strong>Thermal Channel (r⁻¹·⁵):</strong> Explicitly includes Hawking temperature T_H = ℏc³/(8πGMk_B). Smaller black holes have higher temperatures and cause faster thermal decoherence. Combined with distance scaling from Unruh-like effects.</li>
+                <li><strong>Gravitational Channel (r⁻²):</strong> Based on tidal force scaling. Enhancement factor (1 + r⁻³) accounts for strong-field corrections very near the horizon.</li>
+                <li><strong>Vacuum Channel (r⁻²·⁵):</strong> QFT in curved spacetime estimates with logarithmic corrections representing vacuum state modifications.</li>
+                <li><strong>Visual Decay Rate:</strong> Particle coherence directly driven by model decoherence rate with visual scaling for educational clarity.</li>
+            </ul>
+            <p style="margin-top: 1rem;"><em>Reference Framework: Hawking (1975), Zurek (2003), dimensional analysis. Phenomenological constants calibrated for observable timescales.</em></p>
+        </div>
+        
+        <div class="limitations-panel">
+            <h3>Known Limitations & Uncertainties</h3>
+            <ul style="margin-left: 1.5rem; line-height: 1.8;">
+                <li><strong>No Experimental Validation:</strong> Direct observation of quantum decoherence near black holes is currently impossible.</li>
+                <li><strong>Simplified Model:</strong> Full quantum gravity treatment would require theories beyond current physics (string theory, loop quantum gravity).</li>
+                <li><strong>Parameter Uncertainty:</strong> Phenomenological constants have uncertainty ranges of ±50% (thermal) to ±100% (gravitational/vacuum).</li>
+                <li><strong>Classical Approximations:</strong> Uses semiclassical gravity; full quantum effects may differ significantly.</li>
+                <li><strong>No Backreaction:</strong> Ignores how quantum decoherence might affect spacetime geometry itself.</li>
+            </ul>
         </div>
         
         <div class="panel">
             <h3 style="text-align: center; color: #ff6b6b; margin-bottom: 1rem;">Decoherence Rate vs Distance</h3>
             <canvas id="chart" style="max-height: 400px;"></canvas>
+            <p style="text-align: center; margin-top: 1rem; font-size: 0.9rem; color: #a0a0a0;">
+                Error bars represent ±50% uncertainty in phenomenological parameters
+            </p>
         </div>
     </div>
 
@@ -721,6 +780,41 @@
             updateDisplay();
         });
         
+        document.addEventListener('keydown', (e) => {
+            switch(e.key) {
+                case ' ':
+                    e.preventDefault();
+                    document.getElementById('start-btn').click();
+                    break;
+                case 'r':
+                case 'R':
+                    e.preventDefault();
+                    document.getElementById('reset-btn').click();
+                    break;
+                case 'ArrowUp':
+                    e.preventDefault();
+                    mass = Math.min(1000, mass + 10);
+                    document.getElementById('mass-slider').value = mass;
+                    document.getElementById('mass-value').textContent = mass;
+                    updateChart();
+                    updateDisplay();
+                    break;
+                case 'ArrowDown':
+                    e.preventDefault();
+                    mass = Math.max(1, mass - 10);
+                    document.getElementById('mass-slider').value = mass;
+                    document.getElementById('mass-value').textContent = mass;
+                    updateChart();
+                    updateDisplay();
+                    break;
+                case 'e':
+                case 'E':
+                    e.preventDefault();
+                    document.getElementById('export-btn').click();
+                    break;
+            }
+        });
+        
         window.addEventListener('load', () => {
             makeStars();
             makeParticles();
@@ -728,6 +822,10 @@
             updateChart();
             updateDisplay();
             animate();
+            
+            console.log('%c🌌 Quantum Black Hole Decoherence Framework Loaded', 'color: #00f5ff; font-size: 16px; font-weight: bold;');
+            console.log('%cKeyboard: SPACE=play/pause | R=reset | ↑↓=mass | E=export', 'color: #888;');
+            console.log('%cResearch by Rishav Jha | IRIS National Fair 2026', 'color: #a55eea;');
         });
     </script>
 </body>
