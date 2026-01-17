@@ -498,14 +498,17 @@
             cont.innerHTML = '';
             particles = [];
             
+            // Get container dimensions
+            const vizContainer = document.getElementById('viz-container');
+            const cx = vizContainer.offsetWidth / 2;
+            const cy = vizContainer.offsetHeight / 2;
+            
             for (let i = 0; i < 30; i++) {
                 const p = document.createElement('div');
                 p.className = 'particle particle-coherent';
                 
                 const angle = (i / 30) * Math.PI * 2;
-                const radius = 100;
-                const cx = cont.offsetWidth / 2;
-                const cy = cont.offsetHeight / 2;
+                const radius = 80; // Closer to center
                 
                 particles.push({
                     el: p,
