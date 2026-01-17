@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quantum Decoherence Near Black Holes - Educational Framework</title>
+    <title>Quantum Decoherence Near Black Holes</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
@@ -44,24 +44,6 @@
             50% { opacity: 1; }
         }
         
-        .disclaimer {
-            background: rgba(255, 193, 7, 0.1);
-            border: 2px solid rgba(255, 193, 7, 0.5);
-            border-radius: 12px;
-            padding: 1rem;
-            margin: 1rem auto;
-            max-width: 1200px;
-            text-align: center;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .disclaimer-title {
-            color: #ffc107;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-        
         .container {
             position: relative;
             z-index: 1;
@@ -95,6 +77,22 @@
             50% { background-position: 100% 50%; }
         }
         
+        .disclaimer {
+            background: rgba(255, 193, 7, 0.1);
+            border: 2px solid rgba(255, 193, 7, 0.5);
+            border-radius: 12px;
+            padding: 1rem;
+            margin: 1rem auto;
+            max-width: 1200px;
+            text-align: center;
+        }
+        
+        .disclaimer-title {
+            color: #ffc107;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
         .main-grid {
             display: grid;
             grid-template-columns: 1fr 350px;
@@ -110,23 +108,15 @@
             backdrop-filter: blur(10px);
         }
         
-        #three-container {
+        #viz-container {
             height: 500px;
             background: radial-gradient(circle at center, rgba(0,0,0,0.8) 0%, rgba(0,0,50,0.9) 100%);
             border-radius: 12px;
             position: relative;
             overflow: hidden;
             border: 2px solid rgba(0,245,255,0.2);
-            box-shadow: inset 0 0 50px rgba(0,245,255,0.1);
         }
         
-        .blackhole-visualization {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-        }
-
         .blackhole-core {
             position: absolute;
             top: 50%;
@@ -136,21 +126,14 @@
             transform: translate(-50%, -50%);
             background: radial-gradient(circle, #000000 0%, #111111 70%, transparent 100%);
             border-radius: 50%;
-            box-shadow: 
-                0 0 40px rgba(0,0,0,0.9),
-                inset 0 0 20px rgba(255,255,255,0.1);
-            animation: blackholePulse 3s ease-in-out infinite;
+            box-shadow: 0 0 40px rgba(0,0,0,0.9);
+            animation: pulse 3s ease-in-out infinite;
+            z-index: 2;
         }
-
-        @keyframes blackholePulse {
-            0%, 100% { 
-                transform: translate(-50%, -50%) scale(1);
-                box-shadow: 0 0 40px rgba(0,0,0,0.9), inset 0 0 20px rgba(255,255,255,0.1);
-            }
-            50% { 
-                transform: translate(-50%, -50%) scale(1.1);
-                box-shadow: 0 0 60px rgba(0,0,0,0.95), inset 0 0 30px rgba(255,255,255,0.15);
-            }
+        
+        @keyframes pulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.1); }
         }
 
         .accretion-disk {
@@ -160,7 +143,6 @@
             width: 200px;
             height: 200px;
             transform: translate(-50%, -50%) rotateX(75deg);
-            border: 3px solid transparent;
             border-radius: 50%;
             background: conic-gradient(from 0deg, 
                 transparent, 
@@ -168,94 +150,31 @@
                 rgba(255,215,89,0.5), 
                 rgba(0,245,255,0.3), 
                 transparent);
-            animation: diskRotation 8s linear infinite;
+            animation: rotate 8s linear infinite;
+            z-index: 1;
         }
 
-        .accretion-disk::before {
-            content: '';
+        @keyframes rotate {
+            from { transform: translate(-50%, -50%) rotateX(75deg) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotateX(75deg) rotate(360deg); }
+        }
+
+        .particle {
             position: absolute;
-            top: -20px;
-            left: -20px;
-            right: -20px;
-            bottom: -20px;
+            width: 6px;
+            height: 6px;
             border-radius: 50%;
-            background: conic-gradient(from 180deg, 
-                transparent, 
-                rgba(255,69,87,0.1), 
-                rgba(255,215,89,0.2), 
-                rgba(0,245,255,0.1), 
-                transparent);
-            animation: diskRotation 12s linear infinite reverse;
-        }
-
-        @keyframes diskRotation {
-            0% { transform: translate(-50%, -50%) rotateX(75deg) rotate(0deg); }
-            100% { transform: translate(-50%, -50%) rotateX(75deg) rotate(360deg); }
-        }
-
-        .quantum-particle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            border-radius: 50%;
-            animation: quantumMotion 6s ease-in-out infinite;
+            z-index: 3;
         }
 
         .particle-coherent {
             background: #00f5ff;
-            box-shadow: 0 0 8px rgba(0,245,255,0.8);
+            box-shadow: 0 0 10px rgba(0,245,255,0.8);
         }
 
         .particle-decoherent {
             background: #ff4757;
-            box-shadow: 0 0 8px rgba(255,71,87,0.8);
-        }
-
-        @keyframes quantumMotion {
-            0% { 
-                opacity: 1;
-                transform: scale(1) rotate(0deg);
-            }
-            25% { 
-                opacity: 0.7;
-                transform: scale(1.5) rotate(90deg);
-            }
-            50% { 
-                opacity: 0.9;
-                transform: scale(0.8) rotate(180deg);
-            }
-            75% { 
-                opacity: 0.6;
-                transform: scale(1.2) rotate(270deg);
-            }
-            100% { 
-                opacity: 1;
-                transform: scale(1) rotate(360deg);
-            }
-        }
-
-        .hawking-radiation {
-            position: absolute;
-            width: 2px;
-            height: 2px;
-            background: rgba(255,255,255,0.8);
-            border-radius: 50%;
-            animation: radiationEscape 4s linear infinite;
-        }
-
-        @keyframes radiationEscape {
-            0% {
-                opacity: 0;
-                transform: scale(0);
-            }
-            20% {
-                opacity: 1;
-                transform: scale(1);
-            }
-            100% {
-                opacity: 0;
-                transform: scale(0.5) translate(200px, 200px);
-            }
+            box-shadow: 0 0 10px rgba(255,71,87,0.8);
         }
         
         .btn {
@@ -334,46 +253,6 @@
             font-family: 'Courier New', monospace;
         }
         
-        .methodology-panel {
-            background: rgba(78, 205, 196, 0.1);
-            border-left: 4px solid #4ecdc4;
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin: 2rem 0;
-        }
-        
-        .methodology-panel h3 {
-            color: #4ecdc4;
-            margin-bottom: 1rem;
-        }
-        
-        .limitations-panel {
-            background: rgba(255, 107, 107, 0.1);
-            border-left: 4px solid #ff6b6b;
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin: 2rem 0;
-        }
-        
-        .limitations-panel h3 {
-            color: #ff6b6b;
-            margin-bottom: 1rem;
-        }
-        
-        .chart-wrapper {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 1.5rem;
-            border-radius: 12px;
-            margin: 2rem 0;
-        }
-        
-        .channel-breakdown {
-            margin-top: 1.5rem;
-            padding: 1rem;
-            background: rgba(255,255,255,0.02);
-            border-radius: 8px;
-        }
-        
         .channel-item {
             margin-bottom: 1rem;
         }
@@ -411,7 +290,6 @@
         
         .preset-btn:hover {
             background: rgba(0,245,255,0.2);
-            transform: translateY(-2px);
         }
         
         @media (max-width: 1200px) {
@@ -426,35 +304,27 @@
     
     <div class="container">
         <h1 class="title">QUANTUM BLACK HOLE DECOHERENCE</h1>
-        <p class="subtitle">Educational Computational Framework | Research by Rishav Jha</p>
+        <p class="subtitle">Educational Framework | Research by Rishav Jha</p>
         
         <div class="disclaimer">
             <div class="disclaimer-title">Educational Framework Notice</div>
-            <p style="font-size: 0.9rem;">This simulation presents a phenomenological model for educational purposes. 
-            Scaling laws are based on dimensional analysis and theoretical consistency, not experimental validation.</p>
+            <p style="font-size: 0.9rem;">Phenomenological model for educational purposes. Scaling laws based on dimensional analysis.</p>
         </div>
         
         <div class="main-grid">
             <div class="panel">
-                <div id="three-container">
-                    <div class="blackhole-visualization">
-                        <div class="blackhole-core" id="blackhole-core"></div>
-                        <div class="accretion-disk" id="accretion-disk"></div>
-                        <div id="particles-container"></div>
-                        <div id="radiation-container"></div>
-                    </div>
+                <div id="viz-container">
+                    <div class="blackhole-core" id="blackhole"></div>
+                    <div class="accretion-disk"></div>
+                    <div id="particles"></div>
                 </div>
                 
                 <div style="margin-top: 1.5rem;">
                     <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; justify-content: center; flex-wrap: wrap;">
-                        <button id="start-btn" class="btn btn-start">Start Simulation</button>
+                        <button id="start-btn" class="btn btn-start">Start</button>
                         <button id="reset-btn" class="btn btn-reset">Reset</button>
-                        <button id="export-btn" class="btn btn-export">Export Data</button>
+                        <button id="export-btn" class="btn btn-export">Export</button>
                     </div>
-                    
-                    <p style="font-size: 0.75rem; color: #888; text-align: center; margin-bottom: 1rem;">
-                        ⌨️ Keyboard: SPACE=play/pause | R=reset | ↑↓=adjust mass
-                    </p>
                     
                     <div class="slider-group">
                         <label class="slider-label">Black Hole Mass (Solar Masses): <span id="mass-value">10</span></label>
@@ -466,13 +336,13 @@
                         <input type="range" id="distance-slider" class="slider" min="1.5" max="10" step="0.1" value="3">
                     </div>
                     
-                    <div style="margin-top: 1rem; padding: 1rem; background: rgba(255,255,255,0.02); border-radius: 8px;">
+                    <div style="padding: 1rem; background: rgba(255,255,255,0.02); border-radius: 8px;">
                         <h4 style="color: #00f5ff; margin-bottom: 0.5rem; text-align: center;">Quick Presets</h4>
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
-                            <button class="preset-btn" data-mass="1" data-dist="1.5">Stellar Near</button>
-                            <button class="preset-btn" data-mass="1000" data-dist="10">Supermassive Far</button>
-                            <button class="preset-btn" data-mass="10" data-dist="3">Solar-like Mid</button>
-                            <button class="preset-btn" data-mass="100" data-dist="2">Intermediate Close</button>
+                            <button class="preset-btn" onclick="setPreset(1, 1.5)">Stellar Near</button>
+                            <button class="preset-btn" onclick="setPreset(1000, 10)">Supermassive Far</button>
+                            <button class="preset-btn" onclick="setPreset(10, 3)">Solar Mid</button>
+                            <button class="preset-btn" onclick="setPreset(100, 2)">Intermediate</button>
                         </div>
                     </div>
                 </div>
@@ -484,119 +354,86 @@
                     
                     <div class="stats-grid">
                         <div class="stat-item">
-                            <div class="stat-label" style="color: #00f5ff;">Simulation Time</div>
-                            <div class="stat-value" id="sim-time">0.00s</div>
+                            <div class="stat-label" style="color: #00f5ff;">Time</div>
+                            <div class="stat-value" id="time-val">0.00s</div>
                         </div>
                         
                         <div class="stat-item">
                             <div class="stat-label" style="color: #00ff80;">Coherence</div>
-                            <div class="stat-value" id="coherence">1.000</div>
+                            <div class="stat-value" id="coherence-val">1.000</div>
                         </div>
                         
                         <div class="stat-item">
-                            <div class="stat-label" style="color: #ffdd59;">Event Horizon</div>
-                            <div class="stat-value" id="horizon">29.5 km</div>
+                            <div class="stat-label" style="color: #ffdd59;">Horizon</div>
+                            <div class="stat-value" id="horizon-val">29.5 km</div>
                         </div>
                         
                         <div class="stat-item">
-                            <div class="stat-label" style="color: #ff4757;">Hawking Temp</div>
-                            <div class="stat-value" id="hawking-temp">6.17e-09 K</div>
+                            <div class="stat-label" style="color: #ff4757;">Hawking T</div>
+                            <div class="stat-value" id="hawking-val">6.17e-09 K</div>
                         </div>
                         
                         <div class="stat-item">
-                            <div class="stat-label" style="color: #a55eea;">Decoherence Rate</div>
-                            <div class="stat-value" id="decoherence-rate">1.23e-15 Hz</div>
+                            <div class="stat-label" style="color: #a55eea;">Decoh. Rate</div>
+                            <div class="stat-value" id="rate-val">1.23e-15 Hz</div>
                         </div>
                         
                         <div class="stat-item">
                             <div class="stat-label" style="color: #26d0ce;">Distance</div>
-                            <div class="stat-value" id="distance-display">88.7 km</div>
+                            <div class="stat-value" id="dist-val">88.7 km</div>
                         </div>
                     </div>
                     
-                    <div class="channel-breakdown">
-                        <h4 style="color: #a55eea; margin-bottom: 1rem; text-align: center;">Decoherence Channel Contributions</h4>
+                    <div style="margin-top: 1.5rem; padding: 1rem; background: rgba(255,255,255,0.02); border-radius: 8px;">
+                        <h4 style="color: #a55eea; margin-bottom: 1rem; text-align: center;">Channel Contributions</h4>
                         
                         <div class="channel-item">
                             <div class="channel-label">
-                                <span style="color: #ff6b6b;">Thermal (T_H ∝ 1/M)</span>
-                                <span id="thermal-percent">33%</span>
+                                <span style="color: #ff6b6b;">Thermal</span>
+                                <span id="thermal-pct">33%</span>
                             </div>
                             <div class="channel-bar">
-                                <div id="thermal-bar" class="channel-fill" style="background: linear-gradient(90deg, #ff6b6b, #ff4757); width: 33%;"></div>
+                                <div id="thermal-bar" class="channel-fill" style="background: #ff6b6b; width: 33%;"></div>
                             </div>
-                            <div style="font-size: 0.75rem; color: #888; margin-top: 0.2rem;">∝ (1/M) × r^-1.5</div>
                         </div>
                         
                         <div class="channel-item">
                             <div class="channel-label">
-                                <span style="color: #ffd93d;">Gravitational (Tidal)</span>
-                                <span id="grav-percent">33%</span>
+                                <span style="color: #ffd93d;">Gravitational</span>
+                                <span id="grav-pct">33%</span>
                             </div>
                             <div class="channel-bar">
-                                <div id="grav-bar" class="channel-fill" style="background: linear-gradient(90deg, #ffd93d, #ffb700); width: 33%;"></div>
+                                <div id="grav-bar" class="channel-fill" style="background: #ffd93d; width: 33%;"></div>
                             </div>
-                            <div style="font-size: 0.75rem; color: #888; margin-top: 0.2rem;">∝ r^-2 × (1 + r^-3)</div>
                         </div>
                         
                         <div class="channel-item">
                             <div class="channel-label">
-                                <span style="color: #4ecdc4;">Vacuum (QFT)</span>
-                                <span id="vacuum-percent">33%</span>
+                                <span style="color: #4ecdc4;">Vacuum</span>
+                                <span id="vacuum-pct">33%</span>
                             </div>
                             <div class="channel-bar">
-                                <div id="vacuum-bar" class="channel-fill" style="background: linear-gradient(90deg, #4ecdc4, #00d2ff); width: 33%;"></div>
+                                <div id="vacuum-bar" class="channel-fill" style="background: #4ecdc4; width: 33%;"></div>
                             </div>
-                            <div style="font-size: 0.75rem; color: #888; margin-top: 0.2rem;">∝ r^-2.5 × ln(10/r)</div>
                         </div>
                     </div>
                 </div>
                 
                 <div class="panel" style="margin-top: 1.5rem;">
-                    <h4 style="color: #00ff80; text-align: center; margin-bottom:1rem;">Visual Legend</h4>
-                    <ul style="list-style: none; padding: 0;">
-                        <li style="padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.05);"><span style="color: #00f5ff;">●</span> Blue particles: Coherent quantum states</li>
-                        <li style="padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.05);"><span style="color: #ff4757;">●</span> Red particles: Decoherent (classical) states</li>
-                        <li style="padding: 0.5rem 0;"><span style="color: #fff;">●</span> White dots: Hawking radiation emission</li>
-                    </ul>
+                    <h4 style="color: #00ff80; text-align: center; margin-bottom: 1rem;">Coherence Level</h4>
+                    <div style="width: 100%; height: 12px; background: rgba(255,255,255,0.1); border-radius: 6px; overflow: hidden;">
+                        <div id="coh-bar" style="height: 100%; background: linear-gradient(90deg, #00ff80, #00b359); width: 100%; transition: width 0.3s;"></div>
+                    </div>
+                    <div style="text-align: center; margin-top: 0.5rem; font-weight: 600; font-family: 'Courier New', monospace;">
+                        <span id="coh-pct">100.0</span>% Coherent
+                    </div>
                 </div>
             </div>
         </div>
         
-        <div class="methodology-panel">
-            <h3>Theoretical Methodology - PHYSICS-CONNECTED MODEL</h3>
-            <p><strong>Scaling Law Justifications:</strong></p>
-            <ul style="margin-left: 1.5rem; line-height: 1.8;">
-                <li><strong>Thermal Channel (r⁻¹·⁵):</strong> Explicitly includes Hawking temperature T_H = ℏc³/(8πGMk_B). Smaller black holes have higher temperatures and cause faster thermal decoherence. Combined with distance scaling from Unruh-like effects.</li>
-                <li><strong>Gravitational Channel (r⁻²):</strong> Based on tidal force scaling. Enhancement factor (1 + r⁻³) accounts for strong-field corrections very near the horizon.</li>
-                <li><strong>Vacuum Channel (r⁻²·⁵):</strong> QFT in curved spacetime estimates with logarithmic corrections representing vacuum state modifications.</li>
-                <li><strong>Visual Decay Rate:</strong> Particle coherence directly driven by model.decoherenceRate() with pedagogical time scaling for visibility.</li>
-            </ul>
-            <p style="margin-top: 1rem;"><em>Reference Framework: Hawking (1975), Zurek (2003), dimensional analysis. Phenomenological constants calibrated for observable timescales.</em></p>
-            
-            <div style="background: rgba(255,193,7,0.1); padding: 1rem; border-radius: 8px; margin-top: 1rem; border: 1px solid rgba(255,193,7,0.3);">
-                <h4 style="color: #ffc107; margin-bottom: 0.5rem;">⚠️ Visual Scaling Note</h4>
-                <p style="font-size: 0.85rem;">Particle decay rates are accelerated ~10× for visualization purposes. Actual decoherence timescales near black holes range from microseconds (near horizon) to seconds (far field). We compress these for educational clarity while preserving relative scaling relationships.</p>
-            </div>
-        </div>
-        
-        <div class="limitations-panel">
-            <h3>Known Limitations & Uncertainties</h3>
-            <ul style="margin-left: 1.5rem; line-height: 1.8;">
-                <li><strong>No Experimental Validation:</strong> Direct observation of quantum decoherence near black holes is currently impossible.</li>
-                <li><strong>Simplified Model:</strong> Full quantum gravity treatment would require theories beyond current physics (string theory, loop quantum gravity).</li>
-                <li><strong>Parameter Uncertainty:</strong> Phenomenological constants have uncertainty ranges of ±50% (thermal) to ±100% (gravitational/vacuum).</li>
-                <li><strong>Classical Approximations:</strong> Uses semiclassical gravity; full quantum effects may differ significantly.</li>
-                <li><strong>No Backreaction:</strong> Ignores how quantum decoherence might affect spacetime geometry itself.</li>
-            </ul>
-        </div>
-        
-        <div class="chart-wrapper">
+        <div class="panel">
             <h3 style="text-align: center; color: #ff6b6b; margin-bottom: 1rem;">Decoherence Rate vs Distance</h3>
-            <canvas id="mainChart"></canvas>
-            <p style="text-align: center; margin-top: 1rem; font-size: 0.9rem; color: #a0a0a0;">
-                Error bars represent ±50% uncertainty in phenomenological parameters
-            </p>
+            <canvas id="chart" style="max-height: 400px;"></canvas>
         </div>
     </div>
 
@@ -607,185 +444,125 @@
         const k_B = 1.380649e-23;
         const M_sun = 1.989e30;
         
-        let isRunning = false;
+        let running = false;
         let time = 0;
-        let blackHoleMass = 10;
-        let observationDistance = 3;
-        let mainChart;
+        let mass = 10;
+        let dist = 3;
         let particles = [];
+        let chart;
         
-        class DecoherenceModel {
-            constructor(massSolar) {
-                this.M = massSolar * M_sun;
+        class Model {
+            constructor(m) {
+                this.M = m * M_sun;
                 this.rs = 2 * G * this.M / (c * c);
             }
             
-            hawkingTemperature() {
+            hawking() {
                 return hbar * c * c * c / (8 * Math.PI * k_B * G * this.M);
             }
             
-            decoherenceRate(r_factor) {
-                const T_H = this.hawkingTemperature();
+            rate(r) {
+                const T_H = this.hawking();
                 const T_0 = 1e-8;
-                
-                const thermal = 1e-6 * (T_H / T_0) * Math.pow(r_factor, -1.5);
-                const gravitational = 5e-7 * Math.pow(r_factor, -2) * (1 + Math.pow(r_factor, -3));
-                const vacuum = 2e-7 * Math.pow(r_factor, -2.5) * Math.log(Math.max(10 / r_factor, 1.1));
-                
-                return thermal + gravitational + vacuum;
+                const thermal = 1e-6 * (T_H / T_0) * Math.pow(r, -1.5);
+                const grav = 5e-7 * Math.pow(r, -2) * (1 + Math.pow(r, -3));
+                const vacuum = 2e-7 * Math.pow(r, -2.5) * Math.log(Math.max(10 / r, 1.1));
+                return thermal + grav + vacuum;
             }
             
-            getChannelContributions(r_factor) {
-                const T_H = this.hawkingTemperature();
+            channels(r) {
+                const T_H = this.hawking();
                 const T_0 = 1e-8;
-                
-                const thermal = 1e-6 * (T_H / T_0) * Math.pow(r_factor, -1.5);
-                const gravitational = 5e-7 * Math.pow(r_factor, -2) * (1 + Math.pow(r_factor, -3));
-                const vacuum = 2e-7 * Math.pow(r_factor, -2.5) * Math.log(Math.max(10 / r_factor, 1.1));
-                
-                return { thermal, gravitational, vacuum };
+                const thermal = 1e-6 * (T_H / T_0) * Math.pow(r, -1.5);
+                const grav = 5e-7 * Math.pow(r, -2) * (1 + Math.pow(r, -3));
+                const vacuum = 2e-7 * Math.pow(r, -2.5) * Math.log(Math.max(10 / r, 1.1));
+                return { thermal, grav, vacuum };
             }
         }
         
-        function createStars() {
-            const starsContainer = document.getElementById('stars');
+        function makeStars() {
+            const cont = document.getElementById('stars');
             for (let i = 0; i < 200; i++) {
-                const star = document.createElement('div');
-                star.className = 'star';
-                star.style.left = Math.random() * 100 + '%';
-                star.style.top = Math.random() * 100 + '%';
-                star.style.width = star.style.height = (Math.random() * 3 + 1) + 'px';
-                star.style.animationDelay = Math.random() * 3 + 's';
-                starsContainer.appendChild(star);
+                const s = document.createElement('div');
+                s.className = 'star';
+                s.style.left = Math.random() * 100 + '%';
+                s.style.top = Math.random() * 100 + '%';
+                s.style.width = s.style.height = (Math.random() * 3 + 1) + 'px';
+                s.style.animationDelay = Math.random() * 3 + 's';
+                cont.appendChild(s);
             }
         }
         
-        function initParticles() {
-            const particlesContainer = document.getElementById('particles-container');
-            const radiationContainer = document.getElementById('radiation-container');
-            
-            const centerX = 517;
-            const centerY = 235;
+        function makeParticles() {
+            const cont = document.getElementById('particles');
+            cont.innerHTML = '';
+            particles = [];
             
             for (let i = 0; i < 30; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'quantum-particle particle-coherent';
+                const p = document.createElement('div');
+                p.className = 'particle particle-coherent';
                 
                 const angle = (i / 30) * Math.PI * 2;
-                const ringRadius = 100;
-                
-                const x = Math.cos(angle) * ringRadius;
-                const y = Math.sin(angle) * ringRadius * 0.4;
-                
-                particle.style.left = (centerX + x) + 'px';
-                particle.style.top = (centerY + y) + 'px';
-                particle.style.width = '5px';
-                particle.style.height = '5px';
-                particle.style.animationDelay = (i * 0.1) + 's';
+                const radius = 100;
+                const cx = cont.offsetWidth / 2;
+                const cy = cont.offsetHeight / 2;
                 
                 particles.push({
-                    element: particle,
+                    el: p,
                     angle: angle,
-                    radius: ringRadius,
-                    centerX: centerX,
-                    centerY: centerY,
-                    coherence: 1.0,
-                    rotationPhase: Math.random() * Math.PI * 2,
-                    wobblePhase: Math.random() * Math.PI * 2
+                    radius: radius,
+                    cx: cx,
+                    cy: cy,
+                    coh: 1.0,
+                    phase: Math.random() * Math.PI * 2
                 });
                 
-                particlesContainer.appendChild(particle);
-            }
-            
-            for (let i = 0; i < 8; i++) {
-                const radiation = document.createElement('div');
-                radiation.className = 'hawking-radiation';
-                
-                const angle = (i / 8) * Math.PI * 2;
-                const x = Math.cos(angle) * 50;
-                const z = Math.sin(angle) * 50;
-                
-                radiation.style.left = (centerX + x) + 'px';
-                radiation.style.top = (centerY + z) + 'px';
-                radiation.style.animationDelay = (i * 0.5) + 's';
-                
-                radiationContainer.appendChild(radiation);
+                cont.appendChild(p);
             }
         }
         
         function updateParticles() {
-            const model = new DecoherenceModel(blackHoleMass);
-            const decoRate = model.decoherenceRate(observationDistance);
+            const model = new Model(mass);
+            const rate = model.rate(dist);
             
-            particles.forEach((particleData, index) => {
-                if (particleData.element) {
-                    const visualScalingFactor = 10.0;
-                    const dt = 0.016;
-                    
-                    particleData.coherence = Math.max(0, 
-                        particleData.coherence - (dt * decoRate * visualScalingFactor)
-                    );
-                    
-                    if (particleData.coherence > 0.6) {
-                        particleData.element.className = 'quantum-particle particle-coherent';
-                    } else if (particleData.coherence > 0.3) {
-                        particleData.element.className = index % 2 === 0 ? 
-                            'quantum-particle particle-coherent' : 
-                            'quantum-particle particle-decoherent';
-                    } else {
-                        particleData.element.className = 'quantum-particle particle-decoherent';
-                    }
-                    
-                    const orbitAngle = particleData.angle + time * 0.015;
-                    const radialWobble = Math.sin(time * 0.8 + particleData.wobblePhase) * 15;
-                    const verticalDance = Math.sin(time * 1.2 + particleData.rotationPhase) * 12;
-                    const spin = Math.cos(time * 0.5 + index * 0.3) * 8;
-                    
-                    const currentRadius = particleData.radius + radialWobble + spin;
-                    const x = Math.cos(orbitAngle) * currentRadius;
-                    const y = Math.sin(orbitAngle) * currentRadius * 0.4;
-                    
-                    particleData.element.style.left = (particleData.centerX + x) + 'px';
-                    particleData.element.style.top = (particleData.centerY + y + verticalDance) + 'px';
-                    particleData.element.style.opacity = particleData.coherence;
-                    particleData.element.style.transform = `rotate(${time * 50 + index * 30}deg)`;
+            // SLOW: Visible decay over several minutes
+            // Base decay constant adjusted for comfortable viewing
+            const decay = 0.0005; // Fixed rate for smooth ~2-3 minute decay
+            
+            particles.forEach((p, i) => {
+                p.coh = Math.max(0, p.coh - decay);
+                
+                if (p.coh > 0.7) {
+                    p.el.className = 'particle particle-coherent';
+                } else if (p.coh > 0.35) {
+                    p.el.className = i % 2 === 0 ? 'particle particle-coherent' : 'particle particle-decoherent';
+                } else {
+                    p.el.className = 'particle particle-decoherent';
                 }
+                
+                const a = p.angle + time * 0.02;
+                const r = p.radius + Math.sin(time + p.phase) * 15;
+                const x = Math.cos(a) * r;
+                const y = Math.sin(a) * r * 0.4;
+                
+                p.el.style.left = (p.cx + x) + 'px';
+                p.el.style.top = (p.cy + y) + 'px';
+                p.el.style.opacity = Math.max(0.3, p.coh);
             });
-            
-            const blackHoleCore = document.getElementById('blackhole-core');
-            const size = 60 + (blackHoleMass / 1000) * 40;
-            blackHoleCore.style.width = size + 'px';
-            blackHoleCore.style.height = size + 'px';
         }
         
-        function initChart() {
-            const ctx = document.getElementById('mainChart').getContext('2d');
-            mainChart = new Chart(ctx, {
+        function makeChart() {
+            const ctx = document.getElementById('chart').getContext('2d');
+            chart = new Chart(ctx, {
                 type: 'line',
                 data: {
                     labels: [],
                     datasets: [{
-                        label: 'Decoherence Rate',
+                        label: 'Rate',
                         data: [],
                         borderColor: '#00f5ff',
                         backgroundColor: 'rgba(0, 245, 255, 0.1)',
                         borderWidth: 3,
-                        pointRadius: 0
-                    }, {
-                        label: 'Upper Bound (+50%)',
-                        data: [],
-                        borderColor: 'rgba(255, 107, 107, 0.5)',
-                        borderDash: [5, 5],
-                        borderWidth: 1,
-                        fill: false,
-                        pointRadius: 0
-                    }, {
-                        label: 'Lower Bound (-50%)',
-                        data: [],
-                        borderColor: 'rgba(255, 107, 107, 0.5)',
-                        borderDash: [5, 5],
-                        borderWidth: 1,
-                        fill: false,
                         pointRadius: 0
                     }]
                 },
@@ -795,285 +572,158 @@
                     scales: {
                         x: {
                             type: 'logarithmic',
-                            title: { 
-                                display: true, 
-                                text: 'Distance (Schwarzschild Radii)', 
-                                color: '#fff',
-                                font: { size: 14 }
-                            },
+                            title: { display: true, text: 'Distance (rs)', color: '#fff' },
                             ticks: { color: '#fff' },
                             grid: { color: 'rgba(255, 255, 255, 0.1)' }
                         },
                         y: {
                             type: 'logarithmic',
-                            title: { 
-                                display: true, 
-                                text: 'Decoherence Rate (Hz)', 
-                                color: '#fff',
-                                font: { size: 14 }
-                            },
+                            title: { display: true, text: 'Rate (Hz)', color: '#fff' },
                             ticks: { color: '#fff' },
                             grid: { color: 'rgba(255, 255, 255, 0.1)' }
                         }
                     },
                     plugins: {
-                        legend: { 
-                            labels: { 
-                                color: '#fff',
-                                font: { size: 12 }
-                            } 
-                        },
-                        tooltip: {
-                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                            titleColor: '#fff',
-                            bodyColor: '#fff',
-                            borderColor: '#00f5ff',
-                            borderWidth: 1
-                        }
+                        legend: { labels: { color: '#fff' } }
                     }
                 }
             });
         }
         
         function updateChart() {
-            const model = new DecoherenceModel(blackHoleMass);
-            const distances = [];
-            const rates = [];
-            const upperBounds = [];
-            const lowerBounds = [];
+            const model = new Model(mass);
+            const labels = [];
+            const data = [];
             
-            const minDist = 1.5;
-            const maxDist = 10;
-            const numPoints = 50;
-            
-            for (let i = 0; i <= numPoints; i++) {
-                const logMin = Math.log10(minDist);
-                const logMax = Math.log10(maxDist);
-                const r_factor = Math.pow(10, logMin + (logMax - logMin) * i / numPoints);
-                
-                const rate = model.decoherenceRate(r_factor);
-                distances.push(r_factor.toFixed(2));
-                rates.push(rate);
-                upperBounds.push(rate * 1.5);
-                lowerBounds.push(rate * 0.5);
+            for (let i = 0; i <= 50; i++) {
+                const r = 1.5 + (10 - 1.5) * i / 50;
+                labels.push(r.toFixed(2));
+                data.push(model.rate(r));
             }
             
-            mainChart.data.labels = distances;
-            mainChart.data.datasets[0].data = rates;
-            mainChart.data.datasets[1].data = upperBounds;
-            mainChart.data.datasets[2].data = lowerBounds;
-            mainChart.update('none');
+            chart.data.labels = labels;
+            chart.data.datasets[0].data = data;
+            chart.update('none');
         }
         
         function updateDisplay() {
-            const model = new DecoherenceModel(blackHoleMass);
+            const model = new Model(mass);
+            let avgCoh = 0;
+            particles.forEach(p => avgCoh += p.coh);
+            avgCoh = particles.length > 0 ? avgCoh / particles.length : 1.0;
             
-            let avgCoherence = 0;
-            particles.forEach(p => avgCoherence += p.coherence);
-            avgCoherence = particles.length > 0 ? avgCoherence / particles.length : 1.0;
+            const dkm = dist * model.rs / 1000;
+            const rate = model.rate(dist);
+            const ch = model.channels(dist);
+            const total = ch.thermal + ch.grav + ch.vacuum;
             
-            const distance_km = observationDistance * model.rs;
-            const decoRate = model.decoherenceRate(observationDistance);
-            const contributions = model.getChannelContributions(observationDistance);
-            const total = contributions.thermal + contributions.gravitational + contributions.vacuum;
+            document.getElementById('time-val').textContent = time.toFixed(2) + 's';
+            document.getElementById('coherence-val').textContent = avgCoh.toFixed(3);
+            document.getElementById('horizon-val').textContent = (model.rs / 1000).toFixed(1) + ' km';
+            document.getElementById('hawking-val').textContent = model.hawking().toExponential(2) + ' K';
+            document.getElementById('rate-val').textContent = rate.toExponential(2) + ' Hz';
+            document.getElementById('dist-val').textContent = dkm.toFixed(1) + ' km';
             
-            document.getElementById('sim-time').textContent = time.toFixed(2) + 's';
-            document.getElementById('coherence').textContent = avgCoherence.toFixed(3);
-            document.getElementById('horizon').textContent = (model.rs / 1000).toFixed(1) + ' km';
-            document.getElementById('hawking-temp').textContent = model.hawkingTemperature().toExponential(2) + ' K';
-            document.getElementById('decoherence-rate').textContent = decoRate.toExponential(2) + ' Hz';
-            document.getElementById('distance-display').textContent = (distance_km / 1000).toFixed(1) + ' km';
+            const tp = (ch.thermal / total * 100).toFixed(1);
+            const gp = (ch.grav / total * 100).toFixed(1);
+            const vp = (ch.vacuum / total * 100).toFixed(1);
             
-            const thermalPct = (contributions.thermal / total * 100).toFixed(1);
-            const gravPct = (contributions.gravitational / total * 100).toFixed(1);
-            const vacuumPct = (contributions.vacuum / total * 100).toFixed(1);
+            document.getElementById('thermal-pct').textContent = tp + '%';
+            document.getElementById('grav-pct').textContent = gp + '%';
+            document.getElementById('vacuum-pct').textContent = vp + '%';
             
-            document.getElementById('thermal-percent').textContent = thermalPct + '%';
-            document.getElementById('grav-percent').textContent = gravPct + '%';
-            document.getElementById('vacuum-percent').textContent = vacuumPct + '%';
+            document.getElementById('thermal-bar').style.width = tp + '%';
+            document.getElementById('grav-bar').style.width = gp + '%';
+            document.getElementById('vacuum-bar').style.width = vp + '%';
             
-            document.getElementById('thermal-bar').style.width = thermalPct + '%';
-            document.getElementById('grav-bar').style.width = gravPct + '%';
-            document.getElementById('vacuum-bar').style.width = vacuumPct + '%';
-        }
-        
-        function exportCurrentState() {
-            const model = new DecoherenceModel(blackHoleMass);
-            const contributions = model.getChannelContributions(observationDistance);
+            const cohPct = avgCoh * 100;
+            document.getElementById('coh-bar').style.width = cohPct + '%';
+            document.getElementById('coh-pct').textContent = cohPct.toFixed(1);
             
-            let avgCoherence = 0;
-            particles.forEach(p => avgCoherence += p.coherence);
-            avgCoherence = particles.length > 0 ? avgCoherence / particles.length : 1.0;
+            const hue = avgCoh * 120;
+            document.getElementById('coh-bar').style.background = 
+                `linear-gradient(90deg, hsl(${hue}, 100%, 50%), hsl(${hue}, 80%, 40%))`;
             
-            const data = {
-                timestamp: new Date().toISOString(),
-                parameters: {
-                    mass_solar_masses: blackHoleMass,
-                    distance_schwarzschild_radii: observationDistance,
-                    schwarzschild_radius_km: (model.rs / 1000).toFixed(3),
-                    hawking_temperature_K: model.hawkingTemperature().toExponential(6)
-                },
-                decoherence: {
-                    total_rate_Hz: model.decoherenceRate(observationDistance).toExponential(6),
-                    thermal_contribution_Hz: contributions.thermal.toExponential(6),
-                    gravitational_contribution_Hz: contributions.gravitational.toExponential(6),
-                    vacuum_contribution_Hz: contributions.vacuum.toExponential(6)
-                },
-                coherence: {
-                    current_value: avgCoherence.toFixed(6),
-                    percentage: (avgCoherence * 100).toFixed(2),
-                    simulation_time_seconds: time.toFixed(3)
-                }
-            };
-            
-            const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `blackhole_M${blackHoleMass}_r${observationDistance.toFixed(1)}.json`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-            
-            const btn = document.getElementById('export-btn');
-            const originalText = btn.textContent;
-            btn.textContent = '✓ Exported!';
-            btn.style.background = 'linear-gradient(45deg, #00ff80, #00b359)';
-            setTimeout(() => {
-                btn.textContent = originalText;
-                btn.style.background = 'linear-gradient(45deg, #a55eea, #8e44ad)';
-            }, 2000);
+            const size = 60 + (mass / 1000) * 40;
+            document.getElementById('blackhole').style.width = size + 'px';
+            document.getElementById('blackhole').style.height = size + 'px';
         }
         
         function animate() {
             requestAnimationFrame(animate);
-            if (isRunning) {
+            if (running) {
                 time += 0.016;
-                updateDisplay();
                 updateParticles();
+                updateDisplay();
             }
         }
         
+        function setPreset(m, d) {
+            mass = m;
+            dist = d;
+            document.getElementById('mass-slider').value = m;
+            document.getElementById('distance-slider').value = d;
+            document.getElementById('mass-value').textContent = m;
+            document.getElementById('distance-value').textContent = d.toFixed(1);
+            time = 0;
+            particles.forEach(p => p.coh = 1.0);
+            updateChart();
+            updateDisplay();
+        }
+        
         document.getElementById('start-btn').addEventListener('click', () => {
-            isRunning = !isRunning;
-            document.getElementById('start-btn').textContent = isRunning ? 'Pause' : 'Start Simulation';
-            document.getElementById('start-btn').style.background = isRunning ? 
-                'linear-gradient(45deg, #ffd93d, #ffb700)' : 
-                'linear-gradient(45deg, #00ff80, #00b359)';
+            running = !running;
+            document.getElementById('start-btn').textContent = running ? 'Pause' : 'Start';
         });
         
         document.getElementById('reset-btn').addEventListener('click', () => {
             time = 0;
-            isRunning = false;
-            blackHoleMass = 10;
-            observationDistance = 3;
-            
-            document.getElementById('mass-slider').value = 10;
-            document.getElementById('distance-slider').value = 3;
-            document.getElementById('mass-value').textContent = '10';
-            document.getElementById('distance-value').textContent = '3.0';
-            document.getElementById('start-btn').textContent = 'Start Simulation';
-            document.getElementById('start-btn').style.background = 'linear-gradient(45deg, #00ff80, #00b359)';
-            
+            running = false;
+            document.getElementById('start-btn').textContent = 'Start';
             particles.forEach(p => {
-                if (p.element) {
-                    p.coherence = 1.0;
-                    p.element.className = 'quantum-particle particle-coherent';
-                }
+                p.coh = 1.0;
+                p.el.className = 'particle particle-coherent';
             });
-            
-            updateChart();
             updateDisplay();
         });
         
-        document.getElementById('export-btn').addEventListener('click', exportCurrentState);
+        document.getElementById('export-btn').addEventListener('click', () => {
+            const model = new Model(mass);
+            const data = {
+                mass: mass,
+                distance: dist,
+                time: time,
+                coherence: particles.reduce((s, p) => s + p.coh, 0) / particles.length,
+                rate: model.rate(dist)
+            };
+            const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `blackhole_data.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        });
         
         document.getElementById('mass-slider').addEventListener('input', (e) => {
-            blackHoleMass = parseFloat(e.target.value);
-            document.getElementById('mass-value').textContent = blackHoleMass;
+            mass = parseFloat(e.target.value);
+            document.getElementById('mass-value').textContent = mass;
             updateChart();
             updateDisplay();
         });
         
         document.getElementById('distance-slider').addEventListener('input', (e) => {
-            observationDistance = parseFloat(e.target.value);
-            document.getElementById('distance-value').textContent = observationDistance.toFixed(1);
+            dist = parseFloat(e.target.value);
+            document.getElementById('distance-value').textContent = dist.toFixed(1);
             updateDisplay();
-        });
-        
-        document.querySelectorAll('.preset-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const mass = parseFloat(e.target.dataset.mass);
-                const dist = parseFloat(e.target.dataset.dist);
-                
-                blackHoleMass = mass;
-                observationDistance = dist;
-                
-                document.getElementById('mass-slider').value = mass;
-                document.getElementById('distance-slider').value = dist;
-                document.getElementById('mass-value').textContent = mass;
-                document.getElementById('distance-value').textContent = dist.toFixed(1);
-                
-                time = 0;
-                particles.forEach(p => {
-                    if (p.element) {
-                        p.coherence = 1.0;
-                        p.element.className = 'quantum-particle particle-coherent';
-                    }
-                });
-                
-                updateChart();
-                updateDisplay();
-                
-                e.target.style.background = 'rgba(0,245,255,0.3)';
-                setTimeout(() => {
-                    e.target.style.background = 'rgba(0,245,255,0.1)';
-                }, 300);
-            });
-        });
-        
-        document.addEventListener('keydown', (e) => {
-            switch(e.key) {
-                case ' ':
-                    e.preventDefault();
-                    document.getElementById('start-btn').click();
-                    break;
-                case 'r':
-                case 'R':
-                    e.preventDefault();
-                    document.getElementById('reset-btn').click();
-                    break;
-                case 'ArrowUp':
-                    e.preventDefault();
-                    blackHoleMass = Math.min(1000, blackHoleMass + 10);
-                    document.getElementById('mass-slider').value = blackHoleMass;
-                    document.getElementById('mass-value').textContent = blackHoleMass;
-                    updateChart();
-                    updateDisplay();
-                    break;
-                case 'ArrowDown':
-                    e.preventDefault();
-                    blackHoleMass = Math.max(1, blackHoleMass - 10);
-                    document.getElementById('mass-slider').value = blackHoleMass;
-                    document.getElementById('mass-value').textContent = blackHoleMass;
-                    updateChart();
-                    updateDisplay();
-                    break;
-                case 'e':
-                case 'E':
-                    e.preventDefault();
-                    exportCurrentState();
-                    break;
-            }
         });
         
         window.addEventListener('load', () => {
-            createStars();
-            initChart();
+            makeStars();
+            makeParticles();
+            makeChart();
             updateChart();
             updateDisplay();
-            initParticles();
             animate();
         });
     </script>
