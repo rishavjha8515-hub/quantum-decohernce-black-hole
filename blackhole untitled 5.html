@@ -1,9 +1,11 @@
-<!DOCTYPE html>
+<div class="panel">
+            <h3 style="text-align: center; color: #4ecdc4; margin-bottom: 1rem;">Understanding the Information Paradox</h3>
+            <div style="display<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quantum Decoherence Near Black Holes</title>
+    <title>Quantum Decoherence Near Black Holes - Complete Framework</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
@@ -65,6 +67,11 @@
             margin-bottom: 0.5rem;
         }
         
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
         .subtitle {
             text-align: center;
             font-size: 1rem;
@@ -72,14 +79,9 @@
             margin-bottom: 1rem;
         }
         
-        @keyframes gradientShift {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
-        
-        .disclaimer {
-            background: rgba(255, 193, 7, 0.1);
-            border: 2px solid rgba(255, 193, 7, 0.5);
+        .info-banner {
+            background: rgba(0, 245, 255, 0.1);
+            border: 2px solid rgba(0, 245, 255, 0.5);
             border-radius: 12px;
             padding: 1rem;
             margin: 1rem auto;
@@ -87,8 +89,8 @@
             text-align: center;
         }
         
-        .disclaimer-title {
-            color: #ffc107;
+        .banner-title {
+            color: #00f5ff;
             font-weight: 600;
             margin-bottom: 0.5rem;
         }
@@ -106,6 +108,38 @@
             border-radius: 16px;
             padding: 1.5rem;
             backdrop-filter: blur(10px);
+        }
+        
+        .mode-selector {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .mode-btn {
+            padding: 10px 20px;
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 10px;
+            background: rgba(255,255,255,0.05);
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+        
+        .mode-btn.active {
+            background: linear-gradient(45deg, #00f5ff, #00b3cc);
+            color: #000;
+            border-color: #00f5ff;
+            box-shadow: 0 0 20px rgba(0,245,255,0.5);
+        }
+        
+        .mode-btn:hover:not(.active) {
+            background: rgba(255,255,255,0.1);
         }
         
         #viz-container {
@@ -165,6 +199,7 @@
             height: 6px;
             border-radius: 50%;
             z-index: 3;
+            transition: background 0.3s, box-shadow 0.3s;
         }
 
         .particle-coherent {
@@ -172,9 +207,23 @@
             box-shadow: 0 0 10px rgba(0,245,255,0.8);
         }
 
+        .particle-scrambled {
+            background: #ffd93d;
+            box-shadow: 0 0 10px rgba(255,217,61,0.8);
+        }
+
         .particle-decoherent {
             background: #ff4757;
             box-shadow: 0 0 10px rgba(255,71,87,0.8);
+        }
+        
+        .entanglement-line {
+            position: absolute;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(0,245,255,0.3), transparent);
+            transform-origin: left center;
+            pointer-events: none;
+            z-index: 1;
         }
         
         .btn {
@@ -251,6 +300,48 @@
             font-size: 1.1rem;
             font-weight: 600;
             font-family: 'Courier New', monospace;
+        }
+        
+        .mode-description {
+            background: rgba(255, 193, 7, 0.1);
+            border: 2px solid rgba(255, 193, 7, 0.5);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .mode-description h4 {
+            color: #ffc107;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+        
+        .mode-description p {
+            font-size: 0.85rem;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+        
+        .legend {
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin: 0.5rem 0;
+            font-size: 0.85rem;
+        }
+        
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+            box-shadow: 0 0 8px currentColor;
         }
         
         .channel-item {
@@ -330,19 +421,26 @@
     
     <div class="container">
         <h1 class="title">QUANTUM BLACK HOLE DECOHERENCE</h1>
-        <p class="subtitle">Educational Framework | Research by Rishav Jha</p>
+        <p class="subtitle">Interactive Framework | Research by Rishav Jha | IRIS National Fair 2026</p>
         
-        <div class="disclaimer">
-            <div class="disclaimer-title">Educational Framework Notice</div>
-            <p style="font-size: 0.9rem;">Phenomenological model for educational purposes. Scaling laws based on dimensional analysis.</p>
+        <div class="info-banner">
+            <div class="banner-title">🔬 Information Paradox Modes</div>
+            <p style="font-size: 0.9rem;">Toggle between classical (information lost) and modern (information scrambled) interpretations</p>
         </div>
         
         <div class="main-grid">
             <div class="panel">
+                <div class="mode-selector">
+                    <button class="mode-btn" id="mode-classical">❌ Classical Loss</button>
+                    <button class="mode-btn active" id="mode-scramble">🔀 Scrambling</button>
+                    <button class="mode-btn" id="mode-entangle">🔗 Entanglement</button>
+                </div>
+                
                 <div id="viz-container">
                     <div class="blackhole-core" id="blackhole"></div>
                     <div class="accretion-disk"></div>
                     <div id="particles"></div>
+                    <div id="entanglement"></div>
                 </div>
                 
                 <div style="margin-top: 1.5rem;">
@@ -376,7 +474,12 @@
             
             <div>
                 <div class="panel">
-                    <h3 style="color: #00f5ff; text-align: center; margin-bottom: 1rem;">Physical Parameters</h3>
+                    <h3 style="color: #00f5ff; text-align: center; margin-bottom: 1rem;">Current Mode</h3>
+                    
+                    <div id="mode-info" class="mode-description">
+                        <h4>Information Scrambling (Modern)</h4>
+                        <p>Information isn't destroyed - it becomes scrambled across Hawking radiation. Yellow particles show quantum info spreading into correlations. Total information = 100%.</p>
+                    </div>
                     
                     <div class="stats-grid">
                         <div class="stat-item">
@@ -385,8 +488,8 @@
                         </div>
                         
                         <div class="stat-item">
-                            <div class="stat-label" style="color: #00ff80;">Coherence</div>
-                            <div class="stat-value" id="coherence-val">1.000</div>
+                            <div class="stat-label" style="color: #00ff80;">Total Info</div>
+                            <div class="stat-value" id="info-val">100%</div>
                         </div>
                         
                         <div class="stat-item">
@@ -400,8 +503,8 @@
                         </div>
                         
                         <div class="stat-item">
-                            <div class="stat-label" style="color: #a55eea;">Decoh. Rate</div>
-                            <div class="stat-value" id="rate-val">1.23e-15 Hz</div>
+                            <div class="stat-label" style="color: #a55eea;">Entropy</div>
+                            <div class="stat-value" id="entropy-val">0.000</div>
                         </div>
                         
                         <div class="stat-item">
@@ -443,6 +546,22 @@
                             </div>
                         </div>
                     </div>
+                    
+                    <div class="legend">
+                        <h4 style="margin-bottom: 0.5rem; font-size: 0.9rem;">Particle States:</h4>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #00f5ff;"></div>
+                            <span id="legend-blue">Unscrambled quantum info</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #ffd93d;"></div>
+                            <span id="legend-yellow">Scrambled information</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #ff4757;"></div>
+                            <span id="legend-red">Fully scrambled (preserved)</span>
+                        </div>
+                    </div>
                 </div>
                 
                 <div class="panel" style="margin-top: 1.5rem;">
@@ -453,27 +572,37 @@
                     <div style="text-align: center; margin-top: 0.5rem; font-weight: 600; font-family: 'Courier New', monospace;">
                         <span id="coh-pct">100.0</span>% Coherent
                     </div>
-                <div class="panel" style="margin-top: 1.5rem;">
-                    <h4 style="color: #4ecdc4; text-align: center; margin-bottom: 1rem;">Visual Legend</h4>
-                    <ul style="list-style: none; padding: 0;">
-                        <li style="padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.05);"><span style="color: #00f5ff;">●</span> Blue particles: Coherent quantum states</li>
-                        <li style="padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.05);"><span style="color: #ff4757;">●</span> Red particles: Decoherent (classical) states</li>
-                        <li style="padding: 0.5rem 0;"><span style="color: #fff;">●</span> White ring: Hawking radiation emission</li>
-                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="panel">
+            <h3 style="text-align: center; color: #4ecdc4; margin-bottom: 1rem;">Understanding the Information Paradox</h3>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;">
+                <div style="background: rgba(255,71,87,0.1); border: 2px solid rgba(255,71,87,0.3); border-radius: 8px; padding: 1rem;">
+                    <h4 style="color: #ff4757; margin-bottom: 0.5rem;">❌ Classical (Hawking 1974)</h4>
+                    <p style="font-size: 0.85rem; line-height: 1.6;">Information appears destroyed in thermal radiation. Violates quantum unitarity. This was the original paradox.</p>
+                </div>
+                <div style="background: rgba(255,217,61,0.1); border: 2px solid rgba(255,217,61,0.3); border-radius: 8px; padding: 1rem;">
+                    <h4 style="color: #ffd93d; margin-bottom: 0.5rem;">🔀 Scrambling (Modern)</h4>
+                    <p style="font-size: 0.85rem; line-height: 1.6;">Information preserved in subtle correlations. Page curve shows entropy rises then falls. Fast scrambling conjecture.</p>
+                </div>
+                <div style="background: rgba(0,245,255,0.1); border: 2px solid rgba(0,245,255,0.3); border-radius: 8px; padding: 1rem;">
+                    <h4 style="color: #00f5ff; margin-bottom: 0.5rem;">🔗 Entanglement (Holographic)</h4>
+                    <p style="font-size: 0.85rem; line-height: 1.6;">Info encoded on horizon via holographic principle. ER=EPR: entanglement creates wormhole connections.</p>
                 </div>
             </div>
         </div>
         
         <div class="methodology-panel">
-            <h3>Theoretical Methodology - PHYSICS-CONNECTED MODEL</h3>
+            <h3>Theoretical Methodology</h3>
             <p><strong>Scaling Law Justifications:</strong></p>
             <ul style="margin-left: 1.5rem; line-height: 1.8;">
                 <li><strong>Thermal Channel (r⁻¹·⁵):</strong> Explicitly includes Hawking temperature T_H = ℏc³/(8πGMk_B). Smaller black holes have higher temperatures and cause faster thermal decoherence. Combined with distance scaling from Unruh-like effects.</li>
                 <li><strong>Gravitational Channel (r⁻²):</strong> Based on tidal force scaling. Enhancement factor (1 + r⁻³) accounts for strong-field corrections very near the horizon.</li>
                 <li><strong>Vacuum Channel (r⁻²·⁵):</strong> QFT in curved spacetime estimates with logarithmic corrections representing vacuum state modifications.</li>
-                <li><strong>Visual Decay Rate:</strong> Particle coherence directly driven by model decoherence rate with visual scaling for educational clarity.</li>
+                <li><strong>Mode Comparisons:</strong> Classical (information destruction), Scrambling (fast scrambling conjecture), Entanglement (holographic principle).</li>
             </ul>
-            <p style="margin-top: 1rem;"><em>Reference Framework: Hawking (1975), Zurek (2003), dimensional analysis. Phenomenological constants calibrated for observable timescales.</em></p>
         </div>
         
         <div class="limitations-panel">
@@ -508,7 +637,32 @@
         let mass = 10;
         let dist = 3;
         let particles = [];
+        let mode = 'scramble';
         let chart;
+        
+        const modeData = {
+            classical: {
+                title: 'Information Loss (Classical - Hawking 1974)',
+                desc: 'Hawking\'s original calculation suggested information is destroyed. Particles decay from quantum (blue) to classical (red). This violates unitarity and created the information paradox.',
+                legendBlue: 'Initial quantum states',
+                legendYellow: 'Transitioning states',
+                legendRed: 'Information destroyed'
+            },
+            scramble: {
+                title: 'Information Scrambling (Modern)',
+                desc: 'Information isn\'t destroyed - it becomes scrambled across Hawking radiation. Yellow particles show quantum info spreading into correlations. Total information = 100%.',
+                legendBlue: 'Unscrambled quantum info',
+                legendYellow: 'Scrambled information',
+                legendRed: 'Fully scrambled (preserved)'
+            },
+            entangle: {
+                title: 'Entanglement View (Holographic)',
+                desc: 'Particles become entangled with Hawking radiation and horizon. Lines show entanglement connections. Information preserved on horizon surface via holographic principle.',
+                legendBlue: 'Unentangled states',
+                legendYellow: 'Partially entangled',
+                legendRed: 'Maximally entangled'
+            }
+        };
         
         class Model {
             constructor(m) {
@@ -557,7 +711,6 @@
             cont.innerHTML = '';
             particles = [];
             
-            // Get container dimensions
             const vizContainer = document.getElementById('viz-container');
             const cx = vizContainer.offsetWidth / 2;
             const cy = vizContainer.offsetHeight / 2;
@@ -567,7 +720,7 @@
                 p.className = 'particle particle-coherent';
                 
                 const angle = (i / 30) * Math.PI * 2;
-                const radius = 80; // Closer to center
+                const radius = 80;
                 
                 particles.push({
                     el: p,
@@ -576,7 +729,10 @@
                     cx: cx,
                     cy: cy,
                     coh: 1.0,
-                    phase: Math.random() * Math.PI * 2
+                    scramble: 0.0,
+                    entangle: 0.0,
+                    phase: Math.random() * Math.PI * 2,
+                    id: i
                 });
                 
                 cont.appendChild(p);
@@ -587,19 +743,46 @@
             const model = new Model(mass);
             const rate = model.rate(dist);
             
-            // SLOW: Visible decay over several minutes
+            // SLOW: Visible decay over several minutes (from original working code)
             // Base decay constant adjusted for comfortable viewing
             const decay = 0.0005; // Fixed rate for smooth ~2-3 minute decay
             
             particles.forEach((p, i) => {
-                p.coh = Math.max(0, p.coh - decay);
-                
-                if (p.coh > 0.7) {
-                    p.el.className = 'particle particle-coherent';
-                } else if (p.coh > 0.35) {
-                    p.el.className = i % 2 === 0 ? 'particle particle-coherent' : 'particle particle-decoherent';
-                } else {
-                    p.el.className = 'particle particle-decoherent';
+                if (mode === 'classical') {
+                    p.coh = Math.max(0, p.coh - decay);
+                    
+                    if (p.coh > 0.7) {
+                        p.el.className = 'particle particle-coherent';
+                    } else if (p.coh > 0.35) {
+                        p.el.className = i % 2 === 0 ? 'particle particle-coherent' : 'particle particle-decoherent';
+                    } else {
+                        p.el.className = 'particle particle-decoherent';
+                    }
+                    p.el.style.opacity = Math.max(0.3, p.coh);
+                    
+                } else if (mode === 'scramble') {
+                    p.scramble = Math.min(1, p.scramble + decay);
+                    
+                    if (p.scramble < 0.33) {
+                        p.el.className = 'particle particle-coherent';
+                    } else if (p.scramble < 0.66) {
+                        p.el.className = 'particle particle-scrambled';
+                    } else {
+                        p.el.className = 'particle particle-decoherent';
+                    }
+                    p.el.style.opacity = 0.8;
+                    
+                } else if (mode === 'entangle') {
+                    p.entangle = Math.min(1, p.entangle + decay);
+                    
+                    if (p.entangle < 0.33) {
+                        p.el.className = 'particle particle-coherent';
+                    } else if (p.entangle < 0.66) {
+                        p.el.className = 'particle particle-scrambled';
+                    } else {
+                        p.el.className = 'particle particle-decoherent';
+                    }
+                    p.el.style.opacity = 0.9;
                 }
                 
                 const a = p.angle + time * 0.02;
@@ -609,8 +792,55 @@
                 
                 p.el.style.left = (p.cx + x) + 'px';
                 p.el.style.top = (p.cy + y) + 'px';
-                p.el.style.opacity = Math.max(0.3, p.coh);
             });
+            
+            updateEntanglement();
+        }
+        
+        function updateEntanglement() {
+            const cont = document.getElementById('entanglement');
+            
+            if (mode !== 'entangle') {
+                cont.innerHTML = '';
+                return;
+            }
+            
+            cont.innerHTML = '';
+            
+            for (let i = 0; i < particles.length; i++) {
+                if (particles[i].entangle > 0.5 && Math.random() > 0.7) {
+                    const j = (i + 1 + Math.floor(Math.random() * 5)) % particles.length;
+                    
+                    const p1 = particles[i];
+                    const p2 = particles[j];
+                    
+                    const a1 = p1.angle + time * 0.02;
+                    const r1 = p1.radius + Math.sin(time + p1.phase) * 15;
+                    const x1 = p1.cx + Math.cos(a1) * r1;
+                    const y1 = p1.cy + Math.sin(a1) * r1 * 0.4;
+                    
+                    const a2 = p2.angle + time * 0.02;
+                    const r2 = p2.radius + Math.sin(time + p2.phase) * 15;
+                    const x2 = p2.cx + Math.cos(a2) * r2;
+                    const y2 = p2.cy + Math.sin(a2) * r2 * 0.4;
+                    
+                    const line = document.createElement('div');
+                    line.className = 'entanglement-line';
+                    
+                    const dx = x2 - x1;
+                    const dy = y2 - y1;
+                    const length = Math.sqrt(dx * dx + dy * dy);
+                    const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+                    
+                    line.style.left = x1 + 'px';
+                    line.style.top = y1 + 'px';
+                    line.style.width = length + 'px';
+                    line.style.transform = `rotate(${angle}deg)`;
+                    line.style.opacity = p1.entangle * 0.3;
+                    
+                    cont.appendChild(line);
+                }
+            }
         }
         
         function makeChart() {
@@ -670,9 +900,25 @@
         
         function updateDisplay() {
             const model = new Model(mass);
-            let avgCoh = 0;
-            particles.forEach(p => avgCoh += p.coh);
-            avgCoh = particles.length > 0 ? avgCoh / particles.length : 1.0;
+            
+            let totalInfo = 0;
+            let entropy = 0;
+            
+            particles.forEach(p => {
+                if (mode === 'classical') {
+                    totalInfo += p.coh;
+                    entropy += -p.coh * Math.log(p.coh + 0.01);
+                } else if (mode === 'scramble') {
+                    totalInfo += 1;
+                    entropy += p.scramble;
+                } else if (mode === 'entangle') {
+                    totalInfo += 1;
+                    entropy += p.entangle * 0.5;
+                }
+            });
+            
+            totalInfo = (totalInfo / particles.length) * 100;
+            entropy = entropy / particles.length;
             
             const dkm = dist * model.rs / 1000;
             const rate = model.rate(dist);
@@ -680,10 +926,10 @@
             const total = ch.thermal + ch.grav + ch.vacuum;
             
             document.getElementById('time-val').textContent = time.toFixed(2) + 's';
-            document.getElementById('coherence-val').textContent = avgCoh.toFixed(3);
+            document.getElementById('info-val').textContent = totalInfo.toFixed(1) + '%';
             document.getElementById('horizon-val').textContent = (model.rs / 1000).toFixed(1) + ' km';
             document.getElementById('hawking-val').textContent = model.hawking().toExponential(2) + ' K';
-            document.getElementById('rate-val').textContent = rate.toExponential(2) + ' Hz';
+            document.getElementById('entropy-val').textContent = entropy.toFixed(3);
             document.getElementById('dist-val').textContent = dkm.toFixed(1) + ' km';
             
             const tp = (ch.thermal / total * 100).toFixed(1);
@@ -698,6 +944,19 @@
             document.getElementById('grav-bar').style.width = gp + '%';
             document.getElementById('vacuum-bar').style.width = vp + '%';
             
+            // Update coherence bar
+            let avgCoh = 0;
+            particles.forEach(p => {
+                if (mode === 'classical') {
+                    avgCoh += p.coh;
+                } else if (mode === 'scramble') {
+                    avgCoh += (1 - p.scramble);
+                } else if (mode === 'entangle') {
+                    avgCoh += (1 - p.entangle);
+                }
+            });
+            avgCoh = particles.length > 0 ? avgCoh / particles.length : 1.0;
+            
             const cohPct = avgCoh * 100;
             document.getElementById('coh-bar').style.width = cohPct + '%';
             document.getElementById('coh-pct').textContent = cohPct.toFixed(1);
@@ -709,6 +968,29 @@
             const size = 60 + (mass / 1000) * 40;
             document.getElementById('blackhole').style.width = size + 'px';
             document.getElementById('blackhole').style.height = size + 'px';
+        }
+        
+        function setMode(newMode) {
+            mode = newMode;
+            
+            document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`mode-${newMode}`).classList.add('active');
+            
+            const data = modeData[newMode];
+            document.getElementById('mode-info').innerHTML = `
+                <h4>${data.title}</h4>
+                <p>${data.desc}</p>
+            `;
+            
+            document.getElementById('legend-blue').textContent = data.legendBlue;
+            document.getElementById('legend-yellow').textContent = data.legendYellow;
+            document.getElementById('legend-red').textContent = data.legendRed;
+            
+            particles.forEach(p => {
+                p.coh = 1.0;
+                p.scramble = 0.0;
+                p.entangle = 0.0;
+            });
         }
         
         function animate() {
@@ -728,7 +1010,11 @@
             document.getElementById('mass-value').textContent = m;
             document.getElementById('distance-value').textContent = d.toFixed(1);
             time = 0;
-            particles.forEach(p => p.coh = 1.0);
+            particles.forEach(p => {
+                p.coh = 1.0;
+                p.scramble = 0.0;
+                p.entangle = 0.0;
+            });
             updateChart();
             updateDisplay();
         }
@@ -744,25 +1030,37 @@
             document.getElementById('start-btn').textContent = 'Start';
             particles.forEach(p => {
                 p.coh = 1.0;
+                p.scramble = 0.0;
+                p.entangle = 0.0;
                 p.el.className = 'particle particle-coherent';
+                p.el.style.opacity = 1;
             });
+            document.getElementById('entanglement').innerHTML = '';
             updateDisplay();
         });
         
         document.getElementById('export-btn').addEventListener('click', () => {
             const model = new Model(mass);
             const data = {
+                mode: mode,
                 mass: mass,
                 distance: dist,
                 time: time,
-                coherence: particles.reduce((s, p) => s + p.coh, 0) / particles.length,
-                rate: model.rate(dist)
+                totalInfo: (mode === 'classical' ? 
+                    particles.reduce((s, p) => s + p.coh, 0) / particles.length : 1.0) * 100,
+                entropy: particles.reduce((s, p) => {
+                    if (mode === 'classical') return s + (-p.coh * Math.log(p.coh + 0.01));
+                    if (mode === 'scramble') return s + p.scramble;
+                    return s + p.entangle * 0.5;
+                }, 0) / particles.length,
+                rate: model.rate(dist),
+                hawkingTemp: model.hawking()
             };
             const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `blackhole_data.json`;
+            a.download = `blackhole_${mode}_data.json`;
             a.click();
             URL.revokeObjectURL(url);
         });
@@ -780,6 +1078,10 @@
             updateDisplay();
         });
         
+        document.getElementById('mode-classical').addEventListener('click', () => setMode('classical'));
+        document.getElementById('mode-scramble').addEventListener('click', () => setMode('scramble'));
+        document.getElementById('mode-entangle').addEventListener('click', () => setMode('entangle'));
+        
         document.addEventListener('keydown', (e) => {
             switch(e.key) {
                 case ' ':
@@ -790,6 +1092,20 @@
                 case 'R':
                     e.preventDefault();
                     document.getElementById('reset-btn').click();
+                    break;
+                case '1':
+                    setMode('classical');
+                    break;
+                case '2':
+                    setMode('scramble');
+                    break;
+                case '3':
+                    setMode('entangle');
+                    break;
+                case 'e':
+                case 'E':
+                    e.preventDefault();
+                    document.getElementById('export-btn').click();
                     break;
                 case 'ArrowUp':
                     e.preventDefault();
@@ -807,11 +1123,6 @@
                     updateChart();
                     updateDisplay();
                     break;
-                case 'e':
-                case 'E':
-                    e.preventDefault();
-                    document.getElementById('export-btn').click();
-                    break;
             }
         });
         
@@ -823,9 +1134,10 @@
             updateDisplay();
             animate();
             
-            console.log('%c🌌 Quantum Black Hole Decoherence Framework Loaded', 'color: #00f5ff; font-size: 16px; font-weight: bold;');
-            console.log('%cKeyboard: SPACE=play/pause | R=reset | ↑↓=mass | E=export', 'color: #888;');
+            console.log('%c🌌 Complete Quantum Black Hole Framework Loaded', 'color: #00f5ff; font-size: 16px; font-weight: bold;');
+            console.log('%cKeyboard: SPACE=play/pause | R=reset | 1/2/3=modes | E=export | ↑↓=mass', 'color: #888;');
             console.log('%cResearch by Rishav Jha | IRIS National Fair 2026', 'color: #a55eea;');
+            console.log('%c✨ Information Paradox & Physics Model Combined', 'color: #ffd93d;');
         });
     </script>
 </body>
