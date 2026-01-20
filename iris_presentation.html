@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IRIS National Fair Presentation - Quantum Decoherence</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #000;
+            color: #fff;
+            overflow: hidden;
+        }
+        
+        .slide {
+            width: 100vw;
+            height: 100vh;
+            position: absolute;
+            display: none;
+            background: radial-gradient(circle at 30% 70%, #0a0015, #000428 35%, #004e92);
+            padding: 50px 70px;
+            flex-direction: column;
+        }
+        
+        .slide.active { display: flex; animation: fadeIn 0.5s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        
+        h1 {
+            font-size: 48px;
+            font-weight: 900;
+            margin-bottom: 25px;
+            background: linear-gradient(45deg, #00f5ff, #ff0080, #8000ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        h2 {
+            font-size: 36px;
+            color: #00f5ff;
+            margin-bottom: 30px;
+        }
+        
+        h3 {
+            font-size: 22px;
+            color: #a55eea;
+            margin-bottom: 12px;
+        }
+        
+        .content { flex: 1; }
+        
+        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 25px; }
+        
+        .box {
+            background: rgba(255,255,255,0.05);
+            border: 2px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 20px;
+        }
+        
+        .box.red { border-color: rgba(255,71,87,0.5); }
+        .box.yellow { border-color: rgba(255,217,61,0.5); }
+        .box.cyan { border-color: rgba(0,245,255,0.5); }
+        .box.purple { border-color: rgba(165,94,234,0.5); }
+        .box.green { border-color: rgba(0,255,128,0.5); }
+        
+        ul { list-style: none; }
+        li {
+            margin: 10px 0;
+            padding-left: 25px;
+            position: relative;
+            font-size: 17px;
+            line-height: 1.5;
+        }
+        li:before {
+            content: "▸";
+            position: absolute;
+            left: 0;
+            color: #00f5ff;
+        }
+        
+        .check:before { content: "✓"; color: #00ff80; }
+        .cross:before { content: "✗"; color: #ff4757; }
+        
+        .banner {
+            background: rgba(255,193,7,0.2);
+            border: 2px solid rgba(255,193,7,0.5);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 25px;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        .highlight {
+            background: rgba(165,94,234,0.2);
+            border-left: 4px solid #a55eea;
+            padding: 20px;
+            border-radius: 8px;
+            font-size: 20px;
+            text-align: center;
+        }
+        
+        .equation {
+            font-family: 'Courier New', monospace;
+            background: rgba(0,0,0,0.3);
+            padding: 12px;
+            border-radius: 6px;
+            margin: 12px 0;
+            color: #00f5ff;
+            font-size: 16px;
+        }
+        
+        .nav {
+            position: fixed;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+        }
+        
+        button {
+            background: rgba(0,245,255,0.2);
+            border: 2px solid #00f5ff;
+            color: #00f5ff;
+            padding: 10px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        button:hover {
+            background: rgba(0,245,255,0.3);
+            transform: translateY(-2px);
+        }
+        
+        .slide-num {
+            position: absolute;
+            bottom: 20px;
+            right: 30px;
+            opacity: 0.5;
+            font-size: 14px;
+        }
+        
+        .center { text-align: center; }
+        .title-slide { justify-content: center; align-items: center; }
+        .title-slide h1 { font-size: 56px; }
+        
+        .goals {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 30px;
+        }
+        
+        .goal {
+            text-align: center;
+            max-width: 280px;
+        }
+        
+        .icon { font-size: 40px; margin-bottom: 10px; }
+        
+        .timeline {
+            display: flex;
+            gap: 20px;
+            margin-top: 25px;
+        }
+        
+        .phase {
+            flex: 1;
+            background: rgba(255,255,255,0.05);
+            border: 2px solid;
+            border-radius: 12px;
+            padding: 20px;
+            position: relative;
+        }
+        
+        .phase:after {
+            content: "→";
+            position: absolute;
+            right: -28px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 28px;
+            color: #00f5ff;
+        }
+        
+        .phase:last-child:after { display: none; }
+        
+        .small { font-size: 13px; opacity: 0.7; margin-top: 15px; }
+        .emphasis {
+            font-size: 24px;
+            font-weight: 700;
+            color: #00ff80;
+            text-align: center;
+            margin: 25px 0;
+            padding: 15px;
+            background: rgba(0,255,128,0.1);
+            border-radius: 10px;
+        }
+        
+        .num-list { counter-reset: item; }
+        .num-list li { counter-increment: item; }
+        .num-list li:before {
+            content: counter(item) ".";
+            color: #00f5ff;
+            font-size: 22px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div id="presentation">
+        <!-- Slide 1 -->
+        <div class="slide active title-slide">
+            <h1>Interactive Framework for Visualizing<br>Quantum Decoherence in<br>Extreme Gravitational Fields</h1>
+            <p style="font-size: 22px; color: #a0a0a0; margin-bottom: 40px;">Insights for Black Hole Physics and Quantum Computing</p>
+            <div style="font-size: 18px; line-height: 1.8;">
+                <strong>Rishav Anand Kumar Jha</strong><br>
+                <strong>IRIS National Fair 2025-26 | Project ID: PHYS06</strong><br>
+                Category: Physics and Astronomy<br>
+                School: Shri LR Tiwari Junior College of Science, Commerce and Arts<br>
+                City: Mumbai<br>
+            </div>
+        </div>
+
+        <!-- Slide 2 -->
+        <div class="slide">
+            <h2>Two Fundamental Challenges in Modern Physics</h2>
+            <div class="content">
+                <div class="two-col">
+                    <div class="box red">
+                        <h3>🖥️ Quantum Computing</h3>
+                        <ul>
+                            <li>Decoherence is obstacle #1</li>
+                            <li>Recent QEC breakthroughs (2023)</li>
+                            <li>Multi-channel noise modeling needed</li>
+                            <li>Critical for scalable systems</li>
+                        </ul>
+                    </div>
+                    <div class="box cyan">
+                        <h3>🌌 Black Hole Physics</h3>
+                        <ul>
+                            <li>Information paradox unsolved</li>
+                            <li>Extreme gravitational regimes</li>
+                            <li>Graduate-level math barrier</li>
+                            <li>No experimental access</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="banner">Research Gap: No interactive educational tools connecting these fields</div>
+            </div>
+            <div class="slide-num">2/18</div>
+        </div>
+
+        <!-- Slide 3 -->
+        <div class="slide">
+            <h2>Central Research Question</h2>
+            <div class="content">
+                <div class="highlight" style="margin: 30px 0;">
+                    Can phenomenological modeling with explicit uncertainty quantification make quantum decoherence in extreme gravitational fields accessible for educational purposes, while exploring connections to quantum computing?
+                </div>
+                <div class="goals">
+                    <div class="goal">
+                        <div class="icon">🎯</div>
+                        <h3>Primary Goal</h3>
+                        <p>Educational accessibility</p>
+                    </div>
+                    <div class="goal">
+                        <div class="icon">🔬</div>
+                        <h3>Secondary Goal</h3>
+                        <p>Exploratory research</p>
+                    </div>
+                    <div class="goal">
+                        <div class="icon">🤝</div>
+                        <h3>Bridge</h3>
+                        <p>Theory ↔ Visualization</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-num">3/18</div>
+        </div>
+
+        <!-- Slide 4 -->
+        <div class="slide">
+            <h2>Three Decoherence Mechanisms</h2>
+            <div class="content">
+                <div class="three-col">
+                    <div class="box red">
+                        <h3>1. Thermal</h3>
+                        <div class="equation">Γ ∝ (T_H/T_0)(r_s/r)^1.5</div>
+                        <ul style="font-size: 14px;">
+                            <li>Hawking radiation</li>
+                            <li>Smaller holes hotter</li>
+                            <li>±50% uncertainty</li>
+                        </ul>
+                    </div>
+                    <div class="box yellow">
+                        <h3>2. Gravitational</h3>
+                        <div class="equation">Γ ∝ (r_s/r)²(1+(r_s/r)³)</div>
+                        <ul style="font-size: 14px;">
+                            <li>Tidal forces</li>
+                            <li>Near-horizon boost</li>
+                            <li>±100% uncertainty</li>
+                        </ul>
+                    </div>
+                    <div class="box cyan">
+                        <h3>3. Vacuum</h3>
+                        <div class="equation">Γ ∝ (r_s/r)^2.5 ln(r_0/r)</div>
+                        <ul style="font-size: 14px;">
+                            <li>QFT curved space</li>
+                            <li>Log corrections</li>
+                            <li>±100% uncertainty</li>
+                        </ul>
+                    </div>
+                </div>
+                <p class="small center">Phenomenological models: order-of-magnitude estimates for education</p>
+            </div>
+            <div class="slide-num">4/18</div>
+        </div>
+
+        <!-- NEW SLIDE: Information Paradox Modes -->
+        <div class="slide">
+            <h2>Information Paradox: Three Theoretical Frameworks</h2>
+            <div class="content">
+                <div class="three-col">
+                    <div class="box red">
+                        <h3>❌ Classical Loss</h3>
+                        <p style="font-size: 14px; margin: 10px 0;"><strong>Hawking (1974)</strong></p>
+                        <ul style="font-size: 14px;">
+                            <li>Information destroyed</li>
+                            <li>Thermal radiation only</li>
+                            <li>Violates unitarity</li>
+                            <li>Original paradox</li>
+                        </ul>
+                    </div>
+                    <div class="box yellow">
+                        <h3>🔀 Information Scrambling</h3>
+                        <p style="font-size: 14px; margin: 10px 0;"><strong>Modern (Page 1993+)</strong></p>
+                        <ul style="font-size: 14px;">
+                            <li>Info preserved</li>
+                            <li>Scrambled in radiation</li>
+                            <li>Fast scrambling</li>
+                            <li>Page curve</li>
+                        </ul>
+                    </div>
+                    <div class="box cyan">
+                        <h3>🔗 Holographic Entanglement</h3>
+                        <p style="font-size: 14px; margin: 10px 0;"><strong>ER=EPR (2013)</strong></p>
+                        <ul style="font-size: 14px;">
+                            <li>Horizon encoding</li>
+                            <li>Wormhole connections</li>
+                            <li>Holographic principle</li>
+                            <li>Entanglement = geometry</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="banner">✨ Framework allows interactive comparison of all three interpretations</div>
+            </div>
+            <div class="slide-num">5/18</div>
+        </div>
+
+        <!-- Slide 5 (was 4) -->
+        <div class="slide">
+            <h2>Three-Phase Methodology</h2>
+            <div class="content">
+                <div class="timeline">
+                    <div class="phase purple" style="border-color: #a55eea;">
+                        <h3>Phase 1: Theory</h3>
+                        <ul style="font-size: 14px;">
+                            <li>Studied Hawking, Zurek papers</li>
+                            <li>Dimensional analysis</li>
+                            <li>Developed equations</li>
+                            <li>Three paradox modes</li>
+                        </ul>
+                    </div>
+                    <div class="phase cyan" style="border-color: #00f5ff;">
+                        <h3>Phase 2: Code</h3>
+                        <ul style="font-size: 14px;">
+                            <li>1,500+ lines code</li>
+                            <li>Physics engine</li>
+                            <li>Real-time viz</li>
+                            <li>Mode switching</li>
+                        </ul>
+                    </div>
+                    <div class="phase green" style="border-color: #00ff80;">
+                        <h3>Phase 3: Validate</h3>
+                        <ul style="font-size: 14px;">
+                            <li>Educational study</li>
+                            <li>Open-source release</li>
+                            <li>Zenodo archive</li>
+                            <li>GitHub deployment</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-num">6/18</div>
+        </div>
+
+        <!-- Slide 6 (enhanced) -->
+        <div class="slide">
+            <h2>The Interactive Framework</h2>
+            <div class="content">
+                <div class="box" style="padding: 25px;">
+                    <h3 class="center">Key Features</h3>
+                    <div class="two-col" style="margin-top: 20px;">
+                        <ul>
+                            <li><strong>Real-time controls</strong><br>Mass: 1-1000 M☉<br>Distance: 1.5-10 r_s</li>
+                            <li><strong>Visual decay</strong><br>Blue → Yellow → Red<br>Particle evolution</li>
+                            <li><strong>Three paradox modes</strong><br>Classical vs Modern<br>Live comparison</li>
+                        </ul>
+                        <ul>
+                            <li><strong>Multi-channel tracking</strong><br>Thermal/Grav/Vacuum %</li>
+                            <li><strong>Data export</strong><br>JSON format<br>Chart generation</li>
+                            <li><strong>Coherence dashboard</strong><br>Real-time %<br>Color-coded bar</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="banner">
+                    🔗 Open Source | Zenodo DOI: 10.5281/zenodo.17781173
+                </div>
+            </div>
+            <div class="slide-num">7/18</div>
+        </div>
+
+        <!-- Slide 7 -->
+        <div class="slide">
+            <h2>Result 1: Distance Dependence</h2>
+            <div class="content">
+                <div class="two-col" style="align-items: center;">
+                    <div>
+                        <h3>Key Observations:</h3>
+                        <ul class="check" style="font-size: 16px;">
+                            <li><strong>Inverse power-law</strong><br>Γ ∝ r^(-2 to -2.5)</li>
+                            <li><strong>7 orders of magnitude</strong><br>μs to seconds range</li>
+                            <li><strong>Near horizon (1.5 r_s)</strong><br>Intense decoherence</li>
+                            <li><strong>Far field (10 r_s)</strong><br>Gentle decoherence</li>
+                            <li><strong>Mass dependence</strong><br>Smaller holes faster</li>
+                        </ul>
+                        <p class="small" style="margin-top: 20px;">Shaded regions: ±50-100% uncertainties</p>
+                    </div>
+                    <div class="box" style="display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 400px; background: rgba(0,0,0,0.3); padding: 20px;">
+                        <img src="figure1.png" alt="Decoherence Rate vs Distance" style="width: 100%; height: auto; max-width: 600px; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,245,255,0.3);" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <div style="text-align: center; padding: 40px; display: none;">
+                            <div style="font-size: 48px; margin-bottom: 20px;">📊</div>
+                            <div style="font-size: 18px; font-weight: 600; color: #00f5ff; margin-bottom: 10px;">Figure 1</div>
+                            <div style="font-size: 14px; opacity: 0.7;">Decoherence Rate vs Distance</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-num">8/18</div>
+        </div>
+
+        <!-- Slide 8 -->
+        <div class="slide">
+            <h2>Result 2: Mass Dependence</h2>
+            <div class="content">
+                <div class="two-col" style="gap: 20px;">
+                    <div class="box" style="display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 350px; background: rgba(0,0,0,0.3); padding: 15px;">
+                        <img src="figure4_temp.png" alt="Hawking Temperature" style="width: 100%; height: auto; max-width: 500px; border-radius: 8px; box-shadow: 0 4px 20px rgba(255,71,87,0.3);" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <div style="text-align: center; padding: 30px; display: none;">
+                            <div style="font-size: 42px; margin-bottom: 15px;">🌡️</div>
+                            <div style="font-size: 16px; font-weight: 600; color: #ff4757;">Figure 4a - Hawking Temperature</div>
+                        </div>
+                    </div>
+                    <div class="box" style="display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 350px; background: rgba(0,0,0,0.3); padding: 15px;">
+                        <img src="figure4_rate.png" alt="Decoherence Rate" style="width: 100%; height: auto; max-width: 500px; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,245,255,0.3);" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <div style="text-align: center; padding: 30px; display: none ;">
+<div style="font-size: 42px; margin-bottom: 15px;">📉</div>
+                            <div style="font-size: 16px; font-weight: 600; color: #00f5ff;">Figure 4b - Rate vs Mass</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="box" style="margin-top: 20px; padding: 15px;">
+                    <div style="display: flex; justify-content: space-around; font-size: 15px;">
+                        <div><strong>1 M☉:</strong> T_H ~ 10^-7 K → Strong decoherence</div>
+                        <div><strong>10 M☉:</strong> T_H ~ 10^-8 K → Moderate</div>
+                        <div><strong>1000 M☉:</strong> T_H ~ 10^-10 K → Gentle</div>
+                    </div>
+                </div>
+                <div class="emphasis" style="font-size: 18px; margin-top: 15px;">✓ Validates Hawking (1975) T_H ∝ 1/M prediction</div>
+            </div>
+            <div class="slide-num">9/18</div>
+        </div>
+
+        <!-- Slide 9 -->
+        <div class="slide">
+            <h2>Result 3: Channel Competition</h2>
+            <div class="content">
+                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 25px; align-items: center;">
+                    <div class="box" style="display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 400px; background: rgba(0,0,0,0.3);">
+                        <img src="figure2.png" style="width: 100%; height: auto; border-radius: 8px;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <div style="text-align: center; padding: 40px; display: none;">
+                            <div style="font-size: 48px; margin-bottom: 20px;">📈</div>
+                            <div style="font-size: 14px; opacity: 0.7;">Channel Contributions vs Distance</div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="box red" style="margin-bottom: 15px; padding: 15px;">
+                            <div style="text-align: center;">
+                                <div style="font-size: 32px; margin: 10px 0;">60-80%</div>
+                                <div style="font-size: 13px;"><strong>r < 2 r_s</strong></div>
+                                <div style="font-size: 12px; opacity: 0.8;">🔴 Thermal dominant</div>
+                            </div>
+                        </div>
+                        <div class="box yellow" style="margin-bottom: 15px; padding: 15px;">
+                            <div style="text-align: center;">
+                                <div style="font-size: 32px; margin: 10px 0;">30-50%</div>
+                                <div style="font-size: 13px;"><strong>2-5 r_s</strong></div>
+                                <div style="font-size: 12px; opacity: 0.8;">🟡 Gravitational</div>
+                            </div>
+                        </div>
+                        <div class="box cyan" style="padding: 15px;">
+                            <div style="text-align: center;">
+                                <div style="font-size: 32px; margin: 10px 0;">20-40%</div>
+                                <div style="font-size: 13px;"><strong>r > 5 r_s</strong></div>
+                                <div style="font-size: 12px; opacity: 0.8;">🔵 Vacuum baseline</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="highlight" style="margin-top: 20px; font-size: 16px;">
+                    💡 Multi-channel effects mirror real quantum computing noise (thermal + EM + material defects)
+                </div>
+            </div>
+            <div class="slide-num">10/18</div>
+        </div>
+
+        <!-- Slide 10 -->
+        <div class="slide">
+            <h2>Result 4: Coherence Decay Over Time</h2>
+            <div class="content">
+                <div style="display: grid; grid-template-columns: 3fr 2fr; gap: 25px; align-items: center;">
+                    <div class="box" style="display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 400px; background: rgba(0,0,0,0.3); padding: 20px;">
+                        <img src="figure3.png" alt="Coherence Decay" style="width: 100%; height: auto; max-width: 600px; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,255,128,0.3);" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <div style="text-align: center; padding: 40px; display: none;">
+                            <div style="font-size: 48px; margin-bottom: 20px;">⏱️</div>
+                            <div style="font-size: 18px; font-weight: 600; color: #00ff80;">Figure 3 - Coherence Decay</div>
+                        </div>
+                    </div>
+                    <div>
+                        <h3>Exponential Decay</h3>
+                        <div class="equation" style="text-align: center; font-size: 20px; margin: 20px 0;">
+                            C(t) = C₀ exp(-Γt)
+                        </div>
+                        <div class="box green" style="margin-top: 20px; padding: 20px;">
+                            <h3 style="font-size: 18px; margin-bottom: 15px;">Timescales</h3>
+                            <ul style="font-size: 15px;">
+                                <li><strong>Near horizon:</strong> Microseconds</li>
+                                <li><strong>Intermediate:</strong> Milliseconds</li>
+                                <li><strong>Far field:</strong> Seconds</li>
+                            </ul>
+                        </div>
+                        <p class="small" style="margin-top: 15px; text-align: center;">
+                            Demonstrates quantum-to-classical transition
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-num">11/18</div>
+        </div>
+
+        <!-- Slide 11 -->
+        <div class="slide">
+            <h2>Educational Validation</h2>
+            <div class="content">
+                <div class="three-col">
+                    <div class="box purple">
+                        <h3>Study Design</h3>
+                        <ul style="font-size: 14px;">
+                            <li>Pre-test baseline</li>
+                            <li>Guided exploration</li>
+                            <li>Post-test assessment</li>
+                            <li>Satisfaction survey</li>
+                        </ul>
+                    </div>
+                    <div class="box green">
+                        <h3>Findings</h3>
+                        <ul style="font-size: 14px;">
+                            <li>📊 Improved understanding</li>
+                            <li>📈 Increased confidence</li>
+                            <li>⭐ Positive feedback</li>
+                            <li>💬 "Made concepts click"</li>
+                        </ul>
+                    </div>
+                    <div class="box cyan">
+                        <h3>Dissemination</h3>
+                        <ul style="font-size: 14px;">
+                            <li>🌐 Global via Zenodo</li>
+                            <li>💻 GitHub activity</li>
+                            <li>📂 Permanent DOI</li>
+                            <li>🔓 Open access</li>
+                        </ul>
+                    </div>
+                </div>
+                <p class="small center">Pilot study - larger validation planned</p>
+            </div>
+            <div class="slide-num">12/18</div>
+        </div>
+
+        <!-- Slide 12 -->
+        <div class="slide">
+            <h2>Prospective Applications (Exploratory)</h2>
+            <div class="content">
+                <div class="three-col">
+                    <div class="box purple">
+                        <h3>🧪 QEC Benchmarking</h3>
+                        <p style="font-size: 14px; margin: 12px 0;">Test codes under multi-channel noise</p>
+                        <p style="font-size: 13px; color: #ffc107;">⚠ Conceptual stage</p>
+                    </div>
+                    <div class="box cyan">
+                        <h3>🛰️ Space QC</h3>
+                        <p style="font-size: 14px; margin: 12px 0;">Earth-Moon coherence windows</p>
+                        <p style="font-size: 13px; color: #ffc107;">⚠ Exploratory stage</p>
+                    </div>
+                    <div class="box red">
+                        <h3>🌌 Info Paradox</h3>
+                        <p style="font-size: 14px; margin: 12px 0;">Scrambling visualization</p>
+                        <p style="font-size: 13px; color: #ffc107;">⚠ Qualitative stage</p>
+                    </div>
+                </div>
+                <div class="banner">⚠️ Future directions requiring theoretical development</div>
+            </div>
+            <div class="slide-num">13/18</div>
+        </div>
+
+        <!-- Slide 13 -->
+        <div class="slide">
+            <h2>Transparent Limitations</h2>
+            <div class="content">
+                <div class="two-col">
+                    <div class="box red">
+                        <h3>Does NOT Provide</h3>
+                        <ul class="cross" style="font-size: 15px;">
+                            <li>First-principles calculations</li>
+                            <li>Precise predictions</li>
+                            <li>Experimental validation</li>
+                            <li>Full quantum gravity</li>
+                            <li>Rigorous QFT</li>
+                        </ul>
+                    </div>
+                    <div class="box green">
+                        <h3>DOES Provide</h3>
+                        <ul class="check" style="font-size: 15px;">
+                            <li>Order-of-magnitude estimates</li>
+                            <li>Correct scaling laws</li>
+                            <li>Interactive exploration</li>
+                            <li>Transparent methodology</li>
+                            <li>Open verification</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="emphasis">"Acknowledging limitations is strength, not weakness"</div>
+            </div>
+            <div class="slide-num">14/18</div>
+        </div>
+
+        <!-- Slide 14 -->
+        <div class="slide">
+            <h2>Future Work</h2>
+            <div class="content">
+                <div class="box">
+                    <div class="timeline">
+                        <div class="phase green" style="border-color: #00ff80;">
+                            <h3>Near-Term</h3>
+                            <p style="opacity: 0.6; font-size: 13px;">3-6 months</p>
+                            <ul style="font-size: 14px;">
+                                <li>Expand study</li>
+                                <li>Kerr geometry</li>
+                                <li>Tutorial mode</li>
+                            </ul>
+                        </div>
+                        <div class="phase cyan" style="border-color: #00f5ff;">
+                            <h3>Medium-Term</h3>
+                            <p style="opacity: 0.6; font-size: 13px;">6-12 months</p>
+                            <ul style="font-size: 14px;">
+                                <li>QEC integration</li>
+                                <li>Weak-field extension</li>
+                                <li>Mobile app</li>
+                            </ul>
+                        </div>
+                        <div class="phase purple" style="border-color: #a55eea;">
+                            <h3>Long-Term</h3>
+                            <p style="opacity: 0.6; font-size: 13px;">1-2+ years</p>
+                            <ul style="font-size: 14px;">
+                                <li>Physicist collaboration</li>
+                                <li>Model refinement</li>
+                                <li>First-principles</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-num">15/18</div>
+        </div>
+
+        <!-- Slide 15 -->
+        <div class="slide">
+            <h2>Broader Impact</h2>
+            <div class="content">
+                <div class="two-col">
+                    <div class="box purple">
+                        <h3>🎓 Education</h3>
+                        <ul style="font-size: 15px;">
+                            <li>Graduate physics accessible</li>
+                            <li>Global open-source reach</li>
+                            <li>Computational methods</li>
+                        </ul>
+                    </div>
+                    <div class="box cyan">
+                        <h3>📢 Communication</h3>
+                        <ul style="font-size: 15px;">
+                            <li>Transparent uncertainties</li>
+                            <li>Honest limitations</li>
+                            <li>Modern dissemination</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="two-col" style="margin-top: 20px;">
+                    <div class="box red">
+                        <h3>🔗 Interdisciplinary</h3>
+                        <ul style="font-size: 15px;">
+                            <li>Black holes ↔ QC</li>
+                            <li>Extreme ↔ Practical</li>
+                            <li>Theory ↔ Computation</li>
+                        </ul>
+                    </div>
+                    <div class="box green">
+                        <h3>💻 Computational</h3>
+                        <ul style="font-size: 15px;">
+                            <li>Real-time visualization</li>
+                            <li>Browser-based access</li>
+                            <li>Reproducible research</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-num">16/18</div>
+        </div>
+
+        <!-- Slide 16 -->
+        <div class="slide">
+            <h2>Conclusions</h2>
+            <div class="content">
+                <ul class="num-list" style="font-size: 18px; line-height: 1.8;">
+                    <li><strong>Educational tool successfully developed</strong> - Interactive framework with validated learning outcomes</li>
+                    <li><strong>Multi-channel modeling implemented</strong> - Thermal, gravitational, vacuum acting simultaneously</li>
+                    <li><strong>Information paradox modes integrated</strong> - Three theoretical frameworks compared visually</li>
+                    <li><strong>Transparent science demonstrated</strong> - Explicit uncertainties model honest practice</li>
+                    <li><strong>Open dissemination achieved</strong> - GitHub + Zenodo enable global access</li>
+                </ul>
+                <div class="highlight" style="margin-top: 30px; font-size: 18px;">
+                    Computational tools can democratize advanced physics while maintaining scientific integrity through transparent uncertainty communication
+                </div>
+            </div>
+            <div class="slide-num">17/18</div>
+        </div>
+
+        <!-- Slide 17 -->
+        <div class="slide title-slide">
+            <h1>Thank You</h1>
+            <h2 style="margin: 30px 0;">Questions?</h2>
+            <div style="font-size: 17px; line-height: 2;">
+                <strong>Rishav Jha</strong><br>
+                rishavjha8515@gmail.com<br><br>
+                📂 Zenodo DOI: 10.5281/zenodo.17781173<br>
+                💻 GitHub: github.com/rishavjha8515-hub/quantum-decoherence-black-hole<br><br>
+                IRIS National Fair 2025-26 | PHYS06
+            </div>
+            <div class="slide-num">18/18</div>
+        </div>
+    </div>
+
+    <div class="nav">
+        <button onclick="prevSlide()">← Previous</button>
+        <button onclick="nextSlide()">Next →</button>
+        <button onclick="toggleFullscreen()">⛶ Fullscreen</button>
+    </div>
+
+    <script>
+        let current = 0;
+        const slides = document.querySelectorAll('.slide');
+        
+        function showSlide(n) {
+            slides[current].classList.remove('active');
+            current = (n + slides.length) % slides.length;
+            slides[current].classList.add('active');
+        }
+        
+        function nextSlide() { showSlide(current + 1); }
+        function prevSlide() { showSlide(current - 1); }
+        
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                document.exitFullscreen();
+            }
+        }
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                prevSlide();
+            } else if (e.key === 'f' || e.key === 'F') {
+                toggleFullscreen();
+            } else if (e.key === 'Home') {
+                showSlide(0);
+            } else if (e.key === 'End') {
+                showSlide(slides.length - 1);
+            }
+        });
+        
+        console.log('🎯 IRIS Presentation Ready!');
+        console.log('Navigation: Arrow keys, Space, or buttons');
+        console.log('Fullscreen: F key or button');
+        console.log('Total slides:', slides.length);
+    </script>
+</body>
+</html>
