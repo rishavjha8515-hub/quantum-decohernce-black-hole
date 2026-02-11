@@ -19,9 +19,8 @@
 - 🥈 **Silver Medal — IRIS National Science Fair 2026**
 - 📊 **Empirically Validated:** 41.5% → 82.1% learning gains (p < 0.001, Cohen's d = 2.67)
 - 🌍 **Global Reach:** 1,500+ users across 30+ countries
-- 📚 **Academic Impact:** OpenAIRE indexed, peer-reviewed with 30 participants
-- 💯 **100% Recommendation Rate** from all study participants
-
+- 📚 **Academic Impact:** Indexed by OpenAIRE via Zenodo,evaluated through a structured user study with 30 participants.
+- 💯 **100% of participants** reported they would recommend the tool for learning conceptual quantum decoherence.
 ---
 
 ## 📋 Overview
