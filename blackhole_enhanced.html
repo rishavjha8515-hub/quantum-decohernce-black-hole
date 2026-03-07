@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum Decoherence Near Black Holes — Enhanced Framework</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --cyan:    #00f5ff;
+            --green:   #00ff80;
+            --red:     #ff4757;
+            --yellow:  #ffd93d;
+            --purple:  #a55eea;
+            --teal:    #4ecdc4;
+            --orange:  #ff6b35;
+            --panel-bg: rgba(255,255,255,0.025);
+            --border:   rgba(255,255,255,0.09);
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: #040414;
+            color: #e8e8f0;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ---- starfield ---- */
+        .stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+        .star  { position: absolute; border-radius: 50%; background: #fff; animation: twinkle 3s infinite; }
+        @keyframes twinkle { 0%,100% { opacity:.2; } 50% { opacity:.9; } }
+
+        /* ---- nebula glow behind everything ---- */
+        body::before {
+            content:'';
+            position:fixed; inset:0; z-index:0;
+            background:
+                radial-gradient(ellipse 60% 40% at 15% 80%, rgba(0,100,200,.18) 0%, transparent 70%),
+                radial-gradient(ellipse 50% 50% at 85% 20%, rgba(160,40,220,.14) 0%, transparent 70%),
+                radial-gradient(ellipse 80% 60% at 50% 50%, rgba(0,10,40,.95) 0%, transparent 100%);
+            pointer-events: none;
+        }
+
+        .container { position:relative; z-index:1; max-width:1640px; margin:0 auto; padding:20px; }
+
+        /* ---- title ---- */
+        .title {
+            text-align: center;
+            font-family: 'Space Mono', monospace;
+            font-size: clamp(1.6rem, 4vw, 3rem);
+            font-weight: 700;
+            letter-spacing: -1px;
+            background: linear-gradient(100deg, #00f5ff 0%, #a55eea 50%, #ff4757 100%);
+            background-size: 300% 100%;
+            -webkit-background-clip: text; background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradShift 4s ease-in-out infinite;
+            margin-bottom: .4rem;
+        }
+        @keyframes gradShift { 0%,100%{background-position:0%} 50%{background-position:100%} }
+
+        .subtitle { text-align:center; font-size:.9rem; color:#666; margin-bottom:1.2rem; letter-spacing:.5px; }
+
+        /* ======== SCHWARZSCHILD EQUATION BOX ======== */
+        .rs-equation-box {
+            background: linear-gradient(135deg, rgba(0,245,255,.07) 0%, rgba(160,40,220,.05) 100%);
+            border: 1.5px solid rgba(0,245,255,.35);
+            border-radius: 14px;
+            padding: 1.1rem 1.5rem;
+            margin: 0 auto 1.4rem;
+            max-width: 900px;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .rs-eq-main {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.25rem;
+            color: var(--cyan);
+            white-space: nowrap;
+        }
+        .rs-eq-main sup { font-size:.7em; }
+        .rs-eq-desc {
+            font-size: .85rem;
+            color: #aab;
+            line-height: 1.6;
+            max-width: 500px;
+        }
+        .rs-eq-desc strong { color: var(--cyan); }
+
+        /* ======== INFO BANNER ======== */
+        .info-banner {
+            background: rgba(0,245,255,.07);
+            border: 1.5px solid rgba(0,245,255,.3);
+            border-radius: 12px;
+            padding: .85rem 1.2rem;
+            margin: 0 auto 1.4rem;
+            max-width: 900px;
+            text-align: center;
+            font-size: .88rem; color: #9ac;
+        }
+        .banner-title { color: var(--cyan); font-weight: 600; margin-bottom: .3rem; }
+
+        /* ======== PHYSICS CONTEXT RIBBON ======== */
+        .physics-ribbon {
+            display: flex;
+            gap: 1rem;
+            margin: 0 auto 1.4rem;
+            max-width: 1200px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .ribbon-item {
+            background: var(--panel-bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: .6rem 1.1rem;
+            font-family: 'Space Mono', monospace;
+            font-size: .78rem;
+            color: #bbb;
+            flex: 1;
+            min-width: 200px;
+            max-width: 280px;
+        }
+        .ribbon-item span { color: var(--yellow); font-weight: 700; }
+
+        /* ======== LAYOUT ======== */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 360px;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .panel {
+            background: var(--panel-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.4rem;
+            backdrop-filter: blur(12px);
+        }
+
+        /* ======== MODE BUTTONS ======== */
+        .mode-selector { display:flex; gap:.5rem; margin-bottom:1.2rem; justify-content:center; flex-wrap:wrap; }
+        .mode-btn {
+            padding: 9px 18px;
+            border: 1.5px solid rgba(255,255,255,.18);
+            border-radius: 9px;
+            background: rgba(255,255,255,.04);
+            color: #ddd;
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 600;
+            font-size: .8rem;
+            transition: all .25s;
+        }
+        .mode-btn.active {
+            background: linear-gradient(45deg, var(--cyan), #00b3cc);
+            color: #000; border-color: var(--cyan);
+            box-shadow: 0 0 18px rgba(0,245,255,.45);
+        }
+        .mode-btn:hover:not(.active) { background: rgba(255,255,255,.09); }
+
+        /* ======== VISUALIZATION ======== */
+        #viz-container {
+            height: 460px;
+            background: radial-gradient(circle at center, rgba(0,0,0,.9) 0%, rgba(0,0,30,.95) 100%);
+            border-radius: 12px;
+            position: relative; overflow: hidden;
+            border: 1.5px solid rgba(0,245,255,.15);
+        }
+
+        /* Horizon ring on viz */
+        .horizon-ring {
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 100px; height: 100px;
+            transform: translate(-50%, -50%);
+            border: 2px dashed rgba(255,71,87,.55);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 4;
+            animation: horizonPulse 2.5s ease-in-out infinite;
+        }
+        .horizon-label {
+            position: absolute;
+            top: 50%; left: calc(50% + 57px);
+            transform: translateY(-50%);
+            font-family: 'Space Mono', monospace;
+            font-size: .62rem;
+            color: rgba(255,71,87,.75);
+            white-space: nowrap;
+            pointer-events: none;
+            z-index: 4;
+        }
+        @keyframes horizonPulse { 0%,100%{opacity:.55} 50%{opacity:1} }
+
+        .blackhole-core {
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 80px; height: 80px;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle, #000 0%, #111 70%, transparent 100%);
+            border-radius: 50%;
+            box-shadow: 0 0 50px rgba(0,0,0,.95), 0 0 100px rgba(0,0,0,.7);
+            animation: bhPulse 3s ease-in-out infinite;
+            z-index: 2;
+        }
+        @keyframes bhPulse { 0%,100%{transform:translate(-50%,-50%) scale(1)} 50%{transform:translate(-50%,-50%) scale(1.08)} }
+
+        .accretion-disk {
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 200px; height: 200px;
+            transform: translate(-50%, -50%) rotateX(75deg);
+            border-radius: 50%;
+            background: conic-gradient(from 0deg,
+                transparent,
+                rgba(255,69,87,.35),
+                rgba(255,215,89,.55),
+                rgba(0,245,255,.3),
+                transparent);
+            animation: rotate 8s linear infinite;
+            z-index: 1;
+        }
+        @keyframes rotate {
+            from { transform: translate(-50%,-50%) rotateX(75deg) rotate(0deg); }
+            to   { transform: translate(-50%,-50%) rotateX(75deg) rotate(360deg); }
+        }
+
+        .particle { position:absolute; width:6px; height:6px; border-radius:50%; z-index:3; transition:background .3s, box-shadow .3s; }
+        .particle-coherent  { background: var(--cyan);   box-shadow: 0 0 10px rgba(0,245,255,.8); }
+        .particle-scrambled { background: var(--yellow); box-shadow: 0 0 10px rgba(255,217,61,.8); }
+        .particle-decoherent{ background: var(--red);    box-shadow: 0 0 10px rgba(255,71,87,.8);  }
+        .entanglement-line {
+            position:absolute; height:1px;
+            background: linear-gradient(90deg, transparent, rgba(0,245,255,.3), transparent);
+            transform-origin: left center;
+            pointer-events: none; z-index:1;
+        }
+
+        /* ======== WARNING BOX ======== */
+        #horizon-warning {
+            display: none;
+            background: rgba(255,71,87,.12);
+            border: 1.5px solid rgba(255,71,87,.5);
+            border-radius: 8px;
+            padding: .7rem 1rem;
+            margin-top: .8rem;
+            font-size: .82rem;
+            color: #ff8b95;
+            text-align: center;
+        }
+
+        /* ======== BUTTONS ======== */
+        .btn {
+            padding: 11px 22px;
+            border: none; border-radius: 11px;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all .25s;
+            text-transform: uppercase;
+            font-size: .82rem;
+            letter-spacing: .5px;
+        }
+        .btn-start  { background: linear-gradient(45deg, var(--green), #00b359); color: #000; }
+        .btn-reset  { background: linear-gradient(45deg, var(--red),   #cc2030); color: #fff; }
+        .btn-export { background: linear-gradient(45deg, var(--purple), #7030a0); color: #fff; }
+        .btn:hover  { transform: translateY(-2px); filter: brightness(1.1); }
+
+        /* ======== SLIDERS ======== */
+        .slider-group { margin-bottom: 1.2rem; }
+        .slider-label { display:block; font-weight:500; margin-bottom:.45rem; color:#ccd; font-size:.88rem; }
+        .slider { width:100%; height:5px; border-radius:3px; background:#16213e; outline:none; accent-color: var(--cyan); }
+        .mass-scale-bar {
+            display: flex;
+            margin-top: .4rem;
+            font-size: .68rem;
+            font-family: 'Space Mono', monospace;
+            color: #666;
+        }
+        .mass-scale-bar div { flex: 1; text-align: center; padding-top: .2rem; border-top: 2px solid; }
+        .msc-stellar { border-color: var(--cyan)!important; color: var(--cyan); }
+        .msc-inter   { border-color: var(--yellow)!important; color: var(--yellow); }
+        .msc-super   { border-color: var(--purple)!important; color: var(--purple); }
+
+        /* ======== PRESETS ======== */
+        .preset-btn {
+            padding: .5rem .6rem;
+            background: rgba(0,245,255,.07);
+            border: 1px solid rgba(0,245,255,.25);
+            border-radius: 7px;
+            color: var(--cyan);
+            font-size: .75rem;
+            cursor: pointer;
+            transition: all .2s;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 500;
+            text-align: center;
+        }
+        .preset-btn:hover { background: rgba(0,245,255,.18); border-color: var(--cyan); }
+
+        /* ======== STATS GRID ======== */
+        .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: .8rem; }
+        .stat-item {
+            text-align: center; padding: .9rem .5rem;
+            background: rgba(255,255,255,.02);
+            border: 1px solid var(--border);
+            border-radius: 9px;
+        }
+        .stat-label { font-size: .72rem; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; margin-bottom: .4rem; }
+        .stat-value { font-size: 1rem; font-weight: 700; font-family: 'Space Mono', monospace; }
+
+        /* ======== CHANNEL BARS ======== */
+        .channel-item { margin-bottom: .9rem; }
+        .channel-label { display:flex; justify-content:space-between; font-size:.85rem; margin-bottom:.3rem; }
+        .channel-bar  { height:7px; background:rgba(255,255,255,.08); border-radius:4px; overflow:hidden; }
+        .channel-fill { height:100%; transition:width .3s ease; border-radius:4px; }
+
+        /* ======== MODE DESCRIPTION ======== */
+        .mode-description {
+            background: rgba(255,193,7,.07);
+            border: 1.5px solid rgba(255,193,7,.3);
+            border-radius: 9px;
+            padding: .9rem 1rem;
+            margin-bottom: 1.2rem;
+        }
+        .mode-description h4 { color: var(--yellow); margin-bottom:.4rem; font-size:.88rem; }
+        .mode-description p  { font-size:.82rem; line-height:1.65; opacity:.9; }
+
+        /* ======== LEGEND ======== */
+        .legend { background:rgba(0,0,0,.25); border-radius:9px; padding:.9rem; margin-top:1rem; }
+        .legend-item { display:flex; align-items:center; margin:.45rem 0; font-size:.83rem; }
+        .legend-color { width:11px; height:11px; border-radius:50%; margin-right:.5rem; flex-shrink:0; }
+
+        /* ======== COHERENCE BAR ======== */
+        .coh-bar-wrap { height:11px; background:rgba(255,255,255,.08); border-radius:6px; overflow:hidden; }
+        #coh-bar { height:100%; background:linear-gradient(90deg,var(--green),#00b359); width:100%; transition:width .3s; border-radius:6px; }
+
+        /* ======== CHART SECTION ======== */
+        .chart-toggle {
+            display: flex; gap: .5rem; margin-bottom: 1rem; justify-content: center; flex-wrap: wrap;
+        }
+        .toggle-btn {
+            padding: 7px 14px;
+            border: 1.5px solid rgba(255,255,255,.18);
+            border-radius: 8px;
+            background: rgba(255,255,255,.04);
+            color: #bbb;
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+            font-size: .78rem;
+            font-weight: 600;
+            transition: all .2s;
+        }
+        .toggle-btn.active { border-color: currentColor; background: rgba(255,255,255,.1); }
+        .toggle-btn.active.total    { color: var(--cyan);   border-color: var(--cyan);   }
+        .toggle-btn.active.thermal  { color: var(--red);    border-color: var(--red);    }
+        .toggle-btn.active.grav     { color: var(--yellow); border-color: var(--yellow); }
+        .toggle-btn.active.vacuum   { color: var(--teal);   border-color: var(--teal);   }
+
+        /* ======== PHYSICS PANELS ======== */
+        .info-cards {
+            display: grid; grid-template-columns: repeat(3,1fr);
+            gap: 1rem; margin-bottom: 1.5rem;
+        }
+        .info-card {
+            padding: 1.1rem;
+            border-radius: 10px;
+            border: 1.5px solid;
+        }
+        .info-card h4 { margin-bottom:.5rem; font-size:.88rem; }
+        .info-card p  { font-size:.82rem; line-height:1.65; opacity:.85; }
+
+        .methodology-panel {
+            background: rgba(78,205,196,.07);
+            border-left: 4px solid var(--teal);
+            padding: 1.4rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+        }
+        .methodology-panel h3 { color: var(--teal); margin-bottom:.9rem; }
+        .methodology-panel p  { font-size:.88rem; line-height:1.75; color:#bcc; margin-bottom:.7rem; }
+        .methodology-panel ul { margin-left:1.4rem; }
+        .methodology-panel li { font-size:.85rem; line-height:1.8; color:#bcc; }
+        .methodology-panel li strong { color: #dde; }
+
+        .limitations-panel {
+            background: rgba(255,107,107,.07);
+            border-left: 4px solid var(--red);
+            padding: 1.4rem; border-radius:10px;
+            margin: 1.5rem 0;
+        }
+        .limitations-panel h3 { color: var(--red); margin-bottom:.9rem; }
+        .limitations-panel ul { margin-left:1.4rem; }
+        .limitations-panel li { font-size:.85rem; line-height:1.8; color:#cbb; }
+        .limitations-panel li strong { color: #dcc; }
+
+        /* ======== TIME DILATION TABLE ======== */
+        .dilation-table {
+            width: 100%; border-collapse: collapse;
+            font-family: 'Space Mono', monospace;
+            font-size: .78rem;
+            margin-top: .8rem;
+        }
+        .dilation-table th {
+            padding: .5rem .8rem;
+            background: rgba(0,245,255,.08);
+            color: var(--cyan);
+            border-bottom: 1px solid rgba(0,245,255,.25);
+            text-align: left;
+        }
+        .dilation-table td {
+            padding: .45rem .8rem;
+            border-bottom: 1px solid rgba(255,255,255,.04);
+            color: #ccd;
+        }
+        .dilation-table tr:hover td { background: rgba(255,255,255,.03); }
+
+        @media (max-width:1200px) { .main-grid { grid-template-columns:1fr; } }
+        @media (max-width:700px)  { .info-cards { grid-template-columns:1fr; } }
+    </style>
+</head>
+<body>
+<div class="stars" id="stars"></div>
+
+<div class="container">
+    <!-- TITLE -->
+    <h1 class="title">QUANTUM BLACK HOLE DECOHERENCE</h1>
+    <p class="subtitle">Interactive Framework · Research by Rishav Jha · IRIS National Fair 2026</p>
+
+    <!-- ① SCHWARZSCHILD EQUATION BOX -->
+    <div class="rs-equation-box">
+        <div>
+            <div style="font-size:.72rem;color:#778;margin-bottom:.3rem;text-transform:uppercase;letter-spacing:1px;">Schwarzschild Radius</div>
+            <div class="rs-eq-main">r<sub>s</sub> = 2GM / c²</div>
+        </div>
+        <div class="rs-eq-desc">
+            The <strong>Schwarzschild radius</strong> is the critical distance from the center of a black hole at which the escape velocity equals the speed of light — defining the <strong>event horizon</strong>. For 10 M<sub>☉</sub>: r<sub>s</sub> ≈ 29.5 km. Distance in this simulator is expressed in units of r<sub>s</sub>, so <em>r/r<sub>s</sub> = 1</em> is exactly the event horizon.
+        </div>
+    </div>
+
+    <!-- PHYSICS RIBBON -->
+    <div class="physics-ribbon">
+        <div class="ribbon-item">G = <span>6.674 × 10⁻¹¹</span> m³ kg⁻¹ s⁻²</div>
+        <div class="ribbon-item">c = <span>2.998 × 10⁸</span> m/s</div>
+        <div class="ribbon-item">ℏ = <span>1.055 × 10⁻³⁴</span> J·s</div>
+        <div class="ribbon-item">k<sub>B</sub> = <span>1.381 × 10⁻²³</span> J/K</div>
+    </div>
+
+    <!-- INFO BANNER -->
+    <div class="info-banner">
+        <div class="banner-title">🔬 Information Paradox Modes</div>
+        <p>Toggle between classical (information lost) and modern (information scrambled / holographic) interpretations. Distance axis is normalized to Schwarzschild radii — the event horizon is at r/r<sub>s</sub> = 1.</p>
+    </div>
+
+    <!-- MAIN GRID -->
+    <div class="main-grid">
+
+        <!-- LEFT: VISUALIZATION -->
+        <div class="panel">
+            <div class="mode-selector">
+                <button class="mode-btn" id="mode-classical">❌ Classical Loss</button>
+                <button class="mode-btn active" id="mode-scramble">🔀 Scrambling</button>
+                <button class="mode-btn" id="mode-entangle">🔗 Entanglement</button>
+            </div>
+
+            <div id="viz-container">
+                <!-- ② Event Horizon ring on animation -->
+                <div class="horizon-ring" id="horizon-ring"></div>
+                <div class="horizon-label" id="horizon-label-viz">Event Horizon (r<sub>s</sub>)</div>
+                <div class="blackhole-core" id="blackhole"></div>
+                <div class="accretion-disk"></div>
+                <div id="particles"></div>
+                <div id="entanglement"></div>
+            </div>
+
+            <!-- ⑥ UNPHYSICAL VALUE WARNING -->
+            <div id="horizon-warning">
+                ⚠️ Inside or near the event horizon (r &lt; 1.05 r<sub>s</sub>) — classical simulation breaks down. General relativity requires a full quantum gravity treatment.
+            </div>
+
+            <div style="margin-top:1.2rem;">
+                <div style="display:flex;gap:.8rem;margin-bottom:1.2rem;justify-content:center;flex-wrap:wrap;">
+                    <button id="start-btn" class="btn btn-start">Start</button>
+                    <button id="reset-btn" class="btn btn-reset">Reset</button>
+                    <button id="export-btn" class="btn btn-export">Export</button>
+                </div>
+
+                <!-- MASS SLIDER -->
+                <div class="slider-group">
+                    <label class="slider-label">Black Hole Mass (Solar Masses M<sub>☉</sub>): <span id="mass-value" style="color:var(--cyan);font-family:'Space Mono',monospace;">10</span></label>
+                    <input type="range" id="mass-slider" class="slider" min="1" max="4300000" value="10">
+                    <div class="mass-scale-bar">
+                        <div class="msc-stellar">Stellar (1–100)</div>
+                        <div class="msc-inter">Intermediate (100–10k)</div>
+                        <div class="msc-super">Supermassive (&gt;10k)</div>
+                    </div>
+                </div>
+
+                <!-- DISTANCE SLIDER -->
+                <div class="slider-group">
+                    <label class="slider-label">
+                        Distance (r / r<sub>s</sub>):
+                        <span id="distance-value" style="color:var(--green);font-family:'Space Mono',monospace;">3.0</span>
+                        <span id="dist-rs-label" style="font-size:.75rem;color:#778;"> r<sub>s</sub></span>
+                    </label>
+                    <input type="range" id="distance-slider" class="slider" min="1.05" max="10" step="0.05" value="3">
+                </div>
+
+                <!-- ⑦ REAL BH PRESETS -->
+                <div style="padding:.9rem;background:rgba(255,255,255,.02);border-radius:9px;border:1px solid var(--border);">
+                    <h4 style="color:var(--cyan);margin-bottom:.6rem;text-align:center;font-size:.85rem;letter-spacing:.5px;">🌌 Real Black Hole Presets</h4>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.4rem;">
+                        <button class="preset-btn" onclick="setPreset(10, 3)">⭐ Stellar (10 M☉)</button>
+                        <button class="preset-btn" onclick="setPreset(1000, 5)">🔵 Intermediate (1 000 M☉)</button>
+                        <button class="preset-btn" onclick="setPreset(4300000, 8)">🌀 Sagittarius A* (4.3M M☉)</button>
+                        <button class="preset-btn" onclick="setPreset(1, 1.2)">💫 Near-Horizon (1 M☉)</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT: CONTROLS & STATS -->
+        <div>
+            <div class="panel">
+                <h3 style="color:var(--cyan);text-align:center;margin-bottom:1rem;font-size:.95rem;letter-spacing:.5px;">Current Mode</h3>
+
+                <div id="mode-info" class="mode-description">
+                    <h4>Information Scrambling (Modern)</h4>
+                    <p>Information isn't destroyed — it becomes scrambled across Hawking radiation. Yellow particles show quantum info spreading into correlations. Total information = 100%.</p>
+                </div>
+
+                <!-- STATS -->
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-label" style="color:var(--cyan);">Time</div>
+                        <div class="stat-value" id="time-val">0.00s</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label" style="color:var(--green);">Total Info</div>
+                        <div class="stat-value" id="info-val">100%</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label" style="color:var(--yellow);">Horizon (r<sub>s</sub>)</div>
+                        <div class="stat-value" id="horizon-val">29.5 km</div>
+                    </div>
+                    <!-- ⑧ HAWKING TEMPERATURE -->
+                    <div class="stat-item">
+                        <div class="stat-label" style="color:var(--red);">Hawking T<sub>H</sub></div>
+                        <div class="stat-value" id="hawking-val">6.17e-9 K</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label" style="color:var(--purple);">Entropy</div>
+                        <div class="stat-value" id="entropy-val">0.000</div>
+                    </div>
+                    <!-- ③ DISTANCE IN r/rs -->
+                    <div class="stat-item">
+                        <div class="stat-label" style="color:var(--teal);">r / r<sub>s</sub></div>
+                        <div class="stat-value" id="dist-val">3.0</div>
+                    </div>
+                    <!-- ⑤ TIME DILATION -->
+                    <div class="stat-item" style="grid-column:1/-1;">
+                        <div class="stat-label" style="color:var(--orange);">Gravitational Time Dilation &nbsp; 1/√(1 − r<sub>s</sub>/r)</div>
+                        <div class="stat-value" id="dilation-val" style="font-size:.9rem;">1.095×</div>
+                    </div>
+                </div>
+
+                <!-- CHANNEL CONTRIBUTIONS -->
+                <div style="margin-top:1.2rem;padding:.9rem;background:rgba(255,255,255,.02);border-radius:9px;">
+                    <h4 style="color:var(--purple);margin-bottom:.9rem;text-align:center;font-size:.85rem;">Decoherence Channels</h4>
+
+                    <div class="channel-item">
+                        <div class="channel-label">
+                            <span style="color:var(--red);">🔴 Thermal  <small style="color:#666;">∝ T<sub>H</sub> · r<sup>−1.5</sup></small></span>
+                            <span id="thermal-pct">33%</span>
+                        </div>
+                        <div class="channel-bar"><div id="thermal-bar" class="channel-fill" style="background:var(--red);width:33%;"></div></div>
+                    </div>
+
+                    <div class="channel-item">
+                        <div class="channel-label">
+                            <span style="color:var(--yellow);">🟡 Gravitational Tidal  <small style="color:#666;">∝ r<sup>−2</sup></small></span>
+                            <span id="grav-pct">33%</span>
+                        </div>
+                        <div class="channel-bar"><div id="grav-bar" class="channel-fill" style="background:var(--yellow);width:33%;"></div></div>
+                    </div>
+
+                    <div class="channel-item">
+                        <div class="channel-label">
+                            <span style="color:var(--teal);">🔵 Vacuum Fluctuations  <small style="color:#666;">∝ r<sup>−2.5</sup></small></span>
+                            <span id="vacuum-pct">33%</span>
+                        </div>
+                        <div class="channel-bar"><div id="vacuum-bar" class="channel-fill" style="background:var(--teal);width:33%;"></div></div>
+                    </div>
+
+                    <p style="font-size:.72rem;color:#667;margin-top:.5rem;text-align:center;">Gravitational term models tidal curvature gradients (not gravity itself)</p>
+                </div>
+
+                <!-- LEGEND -->
+                <div class="legend">
+                    <h4 style="margin-bottom:.5rem;font-size:.85rem;color:#aab;">Particle States:</h4>
+                    <div class="legend-item"><div class="legend-color" style="background:var(--cyan);box-shadow:0 0 6px var(--cyan);"></div><span id="legend-blue">Unscrambled quantum info</span></div>
+                    <div class="legend-item"><div class="legend-color" style="background:var(--yellow);box-shadow:0 0 6px var(--yellow);"></div><span id="legend-yellow">Scrambled information</span></div>
+                    <div class="legend-item"><div class="legend-color" style="background:var(--red);box-shadow:0 0 6px var(--red);"></div><span id="legend-red">Fully scrambled (preserved)</span></div>
+                </div>
+            </div>
+
+            <!-- COHERENCE BAR -->
+            <div class="panel" style="margin-top:1rem;">
+                <h4 style="color:var(--green);text-align:center;margin-bottom:.8rem;font-size:.88rem;">Quantum Coherence Level</h4>
+                <div class="coh-bar-wrap"><div id="coh-bar"></div></div>
+                <div style="text-align:center;margin-top:.5rem;font-weight:700;font-family:'Space Mono',monospace;font-size:.95rem;">
+                    <span id="coh-pct">100.0</span>% Coherent
+                </div>
+            </div>
+
+            <!-- ⑤ TIME DILATION TABLE -->
+            <div class="panel" style="margin-top:1rem;">
+                <h4 style="color:var(--orange);text-align:center;margin-bottom:.6rem;font-size:.85rem;">⏱ Gravitational Time Dilation Guide</h4>
+                <p style="font-size:.75rem;color:#778;text-align:center;margin-bottom:.5rem;">τ = t · √(1 − r<sub>s</sub>/r) &nbsp;&nbsp; remote vs local time</p>
+                <table class="dilation-table">
+                    <thead><tr><th>r / r<sub>s</sub></th><th>Dilation Factor</th><th>Effect</th></tr></thead>
+                    <tbody>
+                        <tr><td>10.0</td><td>1.054×</td><td style="color:#aaa;">Mild</td></tr>
+                        <tr><td>5.0</td> <td>1.118×</td><td style="color:#aaa;">Noticeable</td></tr>
+                        <tr><td>2.0</td> <td>1.414×</td><td style="color:var(--yellow);">Significant</td></tr>
+                        <tr><td>1.5</td> <td>1.732×</td><td style="color:var(--orange);">Large</td></tr>
+                        <tr><td>1.1</td> <td>3.317×</td><td style="color:var(--red);">Extreme</td></tr>
+                        <tr><td>1.01</td><td>10.05×</td><td style="color:var(--red);">Near-singular</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- ⑧ HAWKING TEMPERATURE CONTEXT -->
+    <div class="panel" style="margin-bottom:1.5rem;background:rgba(255,71,87,.05);border-color:rgba(255,71,87,.2);">
+        <h3 style="color:var(--red);text-align:center;margin-bottom:.8rem;font-size:.95rem;">🌡 Hawking Radiation Temperature &nbsp;  T<sub>H</sub> = ℏc³ / (8πGMk<sub>B</sub>)</h3>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;text-align:center;">
+            <div>
+                <div style="font-size:.78rem;color:#778;margin-bottom:.3rem;">Stellar (10 M☉)</div>
+                <div style="font-family:'Space Mono',monospace;font-size:.95rem;color:var(--red);">6.2 × 10⁻⁹ K</div>
+                <div style="font-size:.7rem;color:#556;margin-top:.2rem;">Extremely cold</div>
+            </div>
+            <div>
+                <div style="font-size:.78rem;color:#778;margin-bottom:.3rem;">Intermediate (1 000 M☉)</div>
+                <div style="font-family:'Space Mono',monospace;font-size:.95rem;color:var(--yellow);">6.2 × 10⁻¹¹ K</div>
+                <div style="font-size:.7rem;color:#556;margin-top:.2rem;">Even colder</div>
+            </div>
+            <div>
+                <div style="font-size:.78rem;color:#778;margin-bottom:.3rem;">Sgr A* (4.3M M☉)</div>
+                <div style="font-family:'Space Mono',monospace;font-size:.95rem;color:var(--purple);">1.4 × 10⁻¹⁴ K</div>
+                <div style="font-size:.7rem;color:#556;margin-top:.2rem;">Far below CMB</div>
+            </div>
+            <div>
+                <div style="font-size:.78rem;color:#778;margin-bottom:.3rem;">Micro BH (10⁻²⁰ kg)</div>
+                <div style="font-family:'Space Mono',monospace;font-size:.95rem;color:var(--cyan);">≫ 10¹²  K</div>
+                <div style="font-size:.7rem;color:#556;margin-top:.2rem;">Instantly evaporates</div>
+            </div>
+        </div>
+        <p style="text-align:center;margin-top:.8rem;font-size:.78rem;color:#667;">Counterintuitive: <em>more massive black holes are colder</em> — T<sub>H</sub> ∝ 1/M</p>
+    </div>
+
+    <!-- PARADOX CARDS -->
+    <div class="info-cards">
+        <div class="info-card" style="background:rgba(255,71,87,.07);border-color:rgba(255,71,87,.3);">
+            <h4 style="color:var(--red);">❌ Classical (Hawking 1974)</h4>
+            <p>Information appears destroyed in thermal Hawking radiation. Violates quantum unitarity — you can't run the equations backward. This is the original paradox.</p>
+        </div>
+        <div class="info-card" style="background:rgba(255,217,61,.07);border-color:rgba(255,217,61,.3);">
+            <h4 style="color:var(--yellow);">🔀 Scrambling (Modern)</h4>
+            <p>Information is preserved but scrambled into non-local correlations across Hawking radiation. The Page curve confirms entropy rises then falls. Fast scrambling conjecture.</p>
+        </div>
+        <div class="info-card" style="background:rgba(0,245,255,.07);border-color:rgba(0,245,255,.3);">
+            <h4 style="color:var(--cyan);">🔗 Entanglement (Holographic)</h4>
+            <p>Information is encoded on the event horizon via the holographic principle. ER = EPR: entanglement between interior and exterior creates effective wormhole connections.</p>
+        </div>
+    </div>
+
+    <!-- ⑨ IMPROVED EXPLANATION + CHART WITH TOGGLE -->
+    <div class="panel" style="margin-bottom:1.5rem;">
+        <h3 style="text-align:center;color:var(--red);margin-bottom:.5rem;font-size:1rem;">Decoherence Rate vs Distance (r / r<sub>s</sub>)</h3>
+
+        <!-- ⑨ IMPROVED EXPLANATION TEXT -->
+        <p style="font-size:.84rem;color:#9ab;text-align:center;max-width:900px;margin:0 auto .9rem;line-height:1.75;">
+            In Schwarzschild spacetime, increasing spacetime curvature near the event horizon amplifies environmental interactions that drive quantum decoherence. This simulator visualizes simplified phenomenological scaling relationships between distance (<em>r/r<sub>s</sub></em>), black hole mass, and decoherence rate. The dashed vertical line marks the event horizon — where escape velocity equals <em>c</em> and classical simulation ceases to be valid.
+        </p>
+
+        <!-- ⑩ CHART TOGGLE -->
+        <div class="chart-toggle">
+            <button class="toggle-btn active total"   id="tog-total"   onclick="toggleDataset('total')">   ● Total Rate</button>
+            <button class="toggle-btn thermal"         id="tog-thermal" onclick="toggleDataset('thermal')"> ● Thermal</button>
+            <button class="toggle-btn grav"            id="tog-grav"    onclick="toggleDataset('grav')">    ● Gravitational</button>
+            <button class="toggle-btn vacuum"          id="tog-vacuum"  onclick="toggleDataset('vacuum')">  ● Vacuum</button>
+        </div>
+
+        <canvas id="chart" style="max-height:420px;"></canvas>
+        <p style="text-align:center;margin-top:.7rem;font-size:.78rem;color:#667;">
+            Error bars represent ±50% uncertainty in phenomenological parameters &nbsp;|&nbsp; Gravitational term models tidal curvature gradients (∝ M/r³ tidal scaling)
+        </p>
+    </div>
+
+    <!-- METHODOLOGY -->
+    <div class="methodology-panel">
+        <h3>Theoretical Methodology</h3>
+
+        <!-- ⑨ IMPROVED PHYSICS PARAGRAPH -->
+        <p>
+            In Schwarzschild spacetime, the metric near the event horizon generates tidal gravitational gradients that scale as ∝ M/r³. These increasing tidal forces near the horizon can amplify environmental interactions causing quantum decoherence — the irreversible loss of phase coherence in a quantum superposition. This simulator visualizes simplified phenomenological scaling laws connecting distance, black hole mass, and decoherence rate across three distinct physical channels.
+        </p>
+        <p><strong>Scaling Law Justifications:</strong></p>
+        <ul>
+            <li><strong>Thermal Channel (r<sup>−1.5</sup>):</strong> Explicitly includes the Hawking temperature T<sub>H</sub> = ℏc³/(8πGMk<sub>B</sub>). Smaller black holes have higher temperatures, causing faster thermal decoherence. Combined with distance scaling from Unruh-like radiation effects.</li>
+            <li><strong>Gravitational Tidal Channel (r<sup>−2</sup>):</strong> Based on tidal force scaling ∝ GM/r³. The enhancement factor (1 + r<sup>−3</sup>) accounts for strong-field corrections very near the horizon. <em>This term approximates tidal gravitational effects — not gravity itself.</em></li>
+            <li><strong>Vacuum Channel (r<sup>−2.5</sup>):</strong> QFT in curved spacetime estimates with logarithmic corrections representing vacuum state modifications near strong curvature regions.</li>
+            <li><strong>Mode Comparisons:</strong> Classical (information destruction, violates unitarity), Scrambling (fast scrambling conjecture, unitarity-preserving), Entanglement (holographic principle, ER=EPR).</li>
+        </ul>
+    </div>
+
+    <div class="limitations-panel">
+        <h3>Known Limitations & Uncertainties</h3>
+        <ul>
+            <li><strong>No Experimental Validation:</strong> Direct observation of quantum decoherence near stellar black holes is currently impossible.</li>
+            <li><strong>Simplified Model:</strong> Full quantum gravity treatment would require theories beyond current physics (string theory, loop quantum gravity).</li>
+            <li><strong>Parameter Uncertainty:</strong> Phenomenological constants have uncertainty ranges of ±50% (thermal) to ±100% (gravitational/vacuum).</li>
+            <li><strong>Classical Approximations:</strong> Uses semiclassical gravity; full quantum effects (backreaction, Planck-scale corrections) may differ significantly.</li>
+            <li><strong>No Backreaction:</strong> Ignores how quantum decoherence might affect the spacetime geometry itself.</li>
+            <li><strong>Event Horizon Constraint:</strong> Simulation is physically meaningful only for r &gt; r<sub>s</sub>. Inside the horizon, the coordinate system breaks down and classical simulation is invalid.</li>
+        </ul>
+    </div>
+
+</div><!-- /container -->
+
+<script>
+    // ======================================================
+    // PHYSICAL CONSTANTS
+    // ======================================================
+    const c    = 299792458;
+    const G    = 6.67430e-11;
+    const hbar = 1.054571817e-34;
+    const k_B  = 1.380649e-23;
+    const M_sun= 1.989e30;
+
+    let running = false;
+    let time    = 0;
+    let mass    = 10;
+    let dist    = 3;
+    let particles = [];
+    let mode    = 'scramble';
+    let chart;
+
+    // Dataset visibility state
+    const dsVisible = { total: true, thermal: false, grav: false, vacuum: false };
+
+    // ======================================================
+    // MODEL
+    // ======================================================
+    class Model {
+        constructor(m) {
+            this.M  = m * M_sun;
+            this.rs = 2 * G * this.M / (c * c);   // Schwarzschild radius [m]
+        }
+        hawking() {
+            // T_H = ℏc³ / (8πGMk_B)
+            return hbar * c * c * c / (8 * Math.PI * k_B * G * this.M);
+        }
+        // r is distance in units of r_s
+        rate(r) {
+            const { thermal, grav, vacuum } = this.channels(r);
+            return thermal + grav + vacuum;
+        }
+        channels(r) {
+            const T_H = this.hawking();
+            const T_0 = 1e-8;
+            // Thermal: Hawking-temperature driven, r^-1.5 distance scaling
+            const thermal = 1e-6 * (T_H / T_0) * Math.pow(r, -1.5);
+            // Gravitational tidal (models ∝ M/r³ tidal gradient effects)
+            const grav    = 5e-7  * Math.pow(r, -2) * (1 + Math.pow(r, -3));
+            // Vacuum fluctuations in curved spacetime
+            const vacuum  = 2e-7  * Math.pow(r, -2.5) * Math.log(Math.max(10 / r, 1.1));
+            return { thermal, grav, vacuum };
+        }
+    }
+
+    // ======================================================
+    // MODE DATA
+    // ======================================================
+    const modeData = {
+        classical: {
+            title: 'Information Loss (Classical — Hawking 1974)',
+            desc:  'Hawking\'s original calculation suggested information is destroyed. Particles decay from quantum (blue) to classical (red). This violates unitarity and created the information paradox.',
+            legendBlue:   'Initial quantum states',
+            legendYellow: 'Transitioning states',
+            legendRed:    'Information destroyed'
+        },
+        scramble: {
+            title: 'Information Scrambling (Modern)',
+            desc:  'Information isn\'t destroyed — it becomes scrambled across Hawking radiation. Yellow particles show quantum info spreading into non-local correlations. Total information = 100%.',
+            legendBlue:   'Unscrambled quantum info',
+            legendYellow: 'Scrambled information',
+            legendRed:    'Fully scrambled (preserved)'
+        },
+        entangle: {
+            title: 'Entanglement View (Holographic)',
+            desc:  'Particles become entangled with Hawking radiation and the horizon. Lines show entanglement connections. Information preserved on horizon surface via holographic principle.',
+            legendBlue:   'Unentangled states',
+            legendYellow: 'Partially entangled',
+            legendRed:    'Maximally entangled'
+        }
+    };
+
+    // ======================================================
+    // STARS
+    // ======================================================
+    function makeStars() {
+        const cont = document.getElementById('stars');
+        for (let i = 0; i < 220; i++) {
+            const s = document.createElement('div');
+            s.className = 'star';
+            s.style.left = Math.random()*100 + '%';
+            s.style.top  = Math.random()*100 + '%';
+            s.style.width = s.style.height = (Math.random()*2.5+.5) + 'px';
+            s.style.animationDelay = Math.random()*3 + 's';
+            cont.appendChild(s);
+        }
+    }
+
+    // ======================================================
+    // PARTICLES
+    // ======================================================
+    function makeParticles() {
+        const cont = document.getElementById('particles');
+        cont.innerHTML = '';
+        particles = [];
+        const vc = document.getElementById('viz-container');
+        const cx = vc.offsetWidth/2, cy = vc.offsetHeight/2;
+        for (let i = 0; i < 30; i++) {
+            const p = document.createElement('div');
+            p.className = 'particle particle-coherent';
+            particles.push({
+                el: p, angle: (i/30)*Math.PI*2, radius: 80,
+                cx, cy, coh: 1, scramble: 0, entangle: 0,
+                phase: Math.random()*Math.PI*2, id: i
+            });
+            cont.appendChild(p);
+        }
+    }
+
+    function updateParticles() {
+        const decay = 0.0005;
+        particles.forEach((p, i) => {
+            if (mode === 'classical') {
+                p.coh = Math.max(0, p.coh - decay);
+                if      (p.coh > .7)  p.el.className = 'particle particle-coherent';
+                else if (p.coh > .35) p.el.className = i%2===0 ? 'particle particle-coherent' : 'particle particle-decoherent';
+                else                  p.el.className = 'particle particle-decoherent';
+                p.el.style.opacity = Math.max(.3, p.coh);
+            } else if (mode === 'scramble') {
+                p.scramble = Math.min(1, p.scramble + decay);
+                if      (p.scramble < .33) p.el.className = 'particle particle-coherent';
+                else if (p.scramble < .66) p.el.className = 'particle particle-scrambled';
+                else                       p.el.className = 'particle particle-decoherent';
+                p.el.style.opacity = .8;
+            } else {
+                p.entangle = Math.min(1, p.entangle + decay);
+                if      (p.entangle < .33) p.el.className = 'particle particle-coherent';
+                else if (p.entangle < .66) p.el.className = 'particle particle-scrambled';
+                else                       p.el.className = 'particle particle-decoherent';
+                p.el.style.opacity = .9;
+            }
+            const a = p.angle + time*.02;
+            const r = p.radius + Math.sin(time + p.phase)*15;
+            p.el.style.left = (p.cx + Math.cos(a)*r) + 'px';
+            p.el.style.top  = (p.cy + Math.sin(a)*r*.4) + 'px';
+        });
+        updateEntanglement();
+    }
+
+    function updateEntanglement() {
+        const cont = document.getElementById('entanglement');
+        if (mode !== 'entangle') { cont.innerHTML = ''; return; }
+        cont.innerHTML = '';
+        for (let i = 0; i < particles.length; i++) {
+            if (particles[i].entangle > .5 && Math.random() > .7) {
+                const j = (i + 1 + Math.floor(Math.random()*5)) % particles.length;
+                const p1 = particles[i], p2 = particles[j];
+                const a1 = p1.angle+time*.02, r1 = p1.radius+Math.sin(time+p1.phase)*15;
+                const x1 = p1.cx+Math.cos(a1)*r1, y1 = p1.cy+Math.sin(a1)*r1*.4;
+                const a2 = p2.angle+time*.02, r2 = p2.radius+Math.sin(time+p2.phase)*15;
+                const x2 = p2.cx+Math.cos(a2)*r2, y2 = p2.cy+Math.sin(a2)*r2*.4;
+                const line = document.createElement('div');
+                line.className = 'entanglement-line';
+                const dx=x2-x1, dy=y2-y1;
+                line.style.left      = x1+'px';
+                line.style.top       = y1+'px';
+                line.style.width     = Math.sqrt(dx*dx+dy*dy)+'px';
+                line.style.transform = `rotate(${Math.atan2(dy,dx)*180/Math.PI}deg)`;
+                line.style.opacity   = p1.entangle*.3;
+                cont.appendChild(line);
+            }
+        }
+    }
+
+    // ======================================================
+    // CHART — with Event Horizon line + individual toggles
+    // ======================================================
+    // ② Custom plugin: draws event horizon dashed line at r/rs = 1
+    const eventHorizonPlugin = {
+        id: 'eventHorizonLine',
+        afterDraw(ch) {
+            const { ctx, chartArea: { top, bottom }, scales: { x } } = ch;
+            const xPos = x.getPixelForValue(1);
+            if (xPos < x.left || xPos > x.right) return;
+            ctx.save();
+            ctx.beginPath();
+            ctx.setLineDash([6, 4]);
+            ctx.strokeStyle = 'rgba(255,71,87,.8)';
+            ctx.lineWidth = 2;
+            ctx.moveTo(xPos, top);
+            ctx.lineTo(xPos, bottom);
+            ctx.stroke();
+            ctx.setLineDash([]);
+            ctx.fillStyle = 'rgba(255,71,87,.9)';
+            ctx.font = '11px "Space Mono", monospace';
+            ctx.textAlign = 'center';
+            ctx.fillText('▲ Event Horizon (rₛ)', xPos, top + 14);
+            ctx.restore();
+        }
+    };
+
+    function makeChart() {
+        const ctx = document.getElementById('chart').getContext('2d');
+        chart = new Chart(ctx, {
+            type: 'line',
+            plugins: [eventHorizonPlugin],
+            data: {
+                labels: [],
+                datasets: [
+                    { label: 'Total Rate',        data: [], borderColor: '#00f5ff', backgroundColor: 'rgba(0,245,255,.08)', borderWidth:2.5, pointRadius:0, tension:.4 },
+                    { label: 'Thermal',           data: [], borderColor: '#ff4757', backgroundColor: 'rgba(255,71,87,.06)',  borderWidth:1.5, pointRadius:0, tension:.4, hidden:true, borderDash:[4,3] },
+                    { label: 'Gravitational Tidal',data:[], borderColor: '#ffd93d', backgroundColor: 'rgba(255,217,61,.06)', borderWidth:1.5, pointRadius:0, tension:.4, hidden:true, borderDash:[4,3] },
+                    { label: 'Vacuum',            data: [], borderColor: '#4ecdc4', backgroundColor: 'rgba(78,205,196,.06)', borderWidth:1.5, pointRadius:0, tension:.4, hidden:true, borderDash:[4,3] }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                scales: {
+                    x: {
+                        type: 'logarithmic',
+                        min: 0.9,
+                        title: { display:true, text:'Distance from Black Hole (r / rₛ)', color:'#aab', font:{size:12} },
+                        ticks: { color:'#888', callback: v => v+'rₛ' },
+                        grid:  { color:'rgba(255,255,255,.06)' }
+                    },
+                    y: {
+                        type: 'logarithmic',
+                        title: { display:true, text:'Decoherence Rate (Hz)', color:'#aab', font:{size:12} },
+                        ticks: { color:'#888' },
+                        grid:  { color:'rgba(255,255,255,.06)' }
+                    }
+                },
+                plugins: {
+                    legend: { labels:{ color:'#aab', font:{size:11} } }
+                }
+            }
+        });
+    }
+
+    function updateChart() {
+        const model = new Model(mass);
+        const labels=[], total=[], thermal=[], grav=[], vacuum=[];
+
+        for (let i = 0; i <= 80; i++) {
+            // Log-spaced from 1.05 to 10
+            const r = 1.05 * Math.pow(10/1.05, i/80);
+            labels.push(r.toFixed(3));
+            const ch = model.channels(r);
+            total.push(ch.thermal + ch.grav + ch.vacuum);
+            thermal.push(ch.thermal);
+            grav.push(ch.grav);
+            vacuum.push(ch.vacuum);
+        }
+
+        chart.data.labels = labels;
+        chart.data.datasets[0].data = total;
+        chart.data.datasets[1].data = thermal;
+        chart.data.datasets[2].data = grav;
+        chart.data.datasets[3].data = vacuum;
+        chart.update('none');
+    }
+
+    // ⑩ Toggle individual dataset visibility
+    function toggleDataset(key) {
+        const idxMap = { total:0, thermal:1, grav:2, vacuum:3 };
+        dsVisible[key] = !dsVisible[key];
+        const ds = chart.data.datasets[idxMap[key]];
+        ds.hidden = !dsVisible[key];
+        chart.update();
+        const btn = document.getElementById('tog-'+key);
+        if (dsVisible[key]) btn.classList.add('active');
+        else                btn.classList.remove('active');
+    }
+
+    // ======================================================
+    // DISPLAY UPDATE
+    // ======================================================
+    function updateDisplay() {
+        const model = new Model(mass);
+
+        let totalInfo=0, entropy=0;
+        particles.forEach(p => {
+            if (mode==='classical') {
+                totalInfo += p.coh;
+                entropy   += -p.coh * Math.log(p.coh + .01);
+            } else if (mode==='scramble') {
+                totalInfo += 1; entropy += p.scramble;
+            } else {
+                totalInfo += 1; entropy += p.entangle * .5;
+            }
+        });
+        totalInfo = (totalInfo / particles.length) * 100;
+        entropy   =  entropy  / particles.length;
+
+        const rate = model.rate(dist);
+        const ch   = model.channels(dist);
+        const total= ch.thermal + ch.grav + ch.vacuum;
+        const rsKm = (model.rs / 1000).toFixed(1);
+
+        // ⑤ Gravitational time dilation: 1/√(1 - 1/r)  where r in rs units
+        const dilFactor = dist > 1 ? (1 / Math.sqrt(1 - 1/dist)).toFixed(3) : '∞';
+
+        document.getElementById('time-val').textContent     = time.toFixed(2) + 's';
+        document.getElementById('info-val').textContent     = totalInfo.toFixed(1) + '%';
+        document.getElementById('horizon-val').textContent  = rsKm + ' km';
+        document.getElementById('hawking-val').textContent  = model.hawking().toExponential(2) + ' K';
+        document.getElementById('entropy-val').textContent  = entropy.toFixed(3);
+        // ③ Distance in r/rs units
+        document.getElementById('dist-val').textContent     = dist.toFixed(2) + ' rₛ';
+        document.getElementById('dilation-val').textContent = dilFactor + '×';
+
+        const tp = (ch.thermal/total*100).toFixed(1);
+        const gp = (ch.grav   /total*100).toFixed(1);
+        const vp = (ch.vacuum /total*100).toFixed(1);
+        document.getElementById('thermal-pct').textContent  = tp+'%';
+        document.getElementById('grav-pct').textContent     = gp+'%';
+        document.getElementById('vacuum-pct').textContent   = vp+'%';
+        document.getElementById('thermal-bar').style.width  = tp+'%';
+        document.getElementById('grav-bar').style.width     = gp+'%';
+        document.getElementById('vacuum-bar').style.width   = vp+'%';
+
+        let avgCoh = 0;
+        particles.forEach(p => {
+            if      (mode==='classical') avgCoh += p.coh;
+            else if (mode==='scramble')  avgCoh += (1-p.scramble);
+            else                         avgCoh += (1-p.entangle);
+        });
+        avgCoh = particles.length > 0 ? avgCoh/particles.length : 1;
+        const cohPct = avgCoh*100;
+        document.getElementById('coh-bar').style.width  = cohPct+'%';
+        document.getElementById('coh-pct').textContent  = cohPct.toFixed(1);
+        document.getElementById('coh-bar').style.background =
+            `linear-gradient(90deg, hsl(${avgCoh*120},100%,50%), hsl(${avgCoh*120},80%,40%))`;
+
+        const size = 60 + (Math.min(mass, 1000)/1000)*40;
+        document.getElementById('blackhole').style.width  = size+'px';
+        document.getElementById('blackhole').style.height = size+'px';
+
+        // ⑥ Warning when too close to horizon
+        const warning = document.getElementById('horizon-warning');
+        warning.style.display = dist < 1.2 ? 'block' : 'none';
+    }
+
+    // ======================================================
+    // MODE
+    // ======================================================
+    function setMode(newMode) {
+        mode = newMode;
+        document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById('mode-'+newMode).classList.add('active');
+        const data = modeData[newMode];
+        document.getElementById('mode-info').innerHTML =
+            `<h4>${data.title}</h4><p>${data.desc}</p>`;
+        document.getElementById('legend-blue').textContent   = data.legendBlue;
+        document.getElementById('legend-yellow').textContent = data.legendYellow;
+        document.getElementById('legend-red').textContent    = data.legendRed;
+        particles.forEach(p => { p.coh=1; p.scramble=0; p.entangle=0; });
+    }
+
+    // ======================================================
+    // ANIMATION LOOP
+    // ======================================================
+    function animate() {
+        requestAnimationFrame(animate);
+        if (running) {
+            time += .016;
+            updateParticles();
+            updateDisplay();
+        }
+    }
+
+    // ======================================================
+    // PRESETS
+    // ======================================================
+    function setPreset(m, d) {
+        mass = m; dist = d;
+        // Clamp slider — it has max 4300000
+        document.getElementById('mass-slider').value = Math.min(m, 4300000);
+        document.getElementById('distance-slider').value = d;
+        document.getElementById('mass-value').textContent    = m.toLocaleString();
+        document.getElementById('distance-value').textContent= d.toFixed(2);
+        time = 0;
+        particles.forEach(p => { p.coh=1; p.scramble=0; p.entangle=0; });
+        updateChart();
+        updateDisplay();
+    }
+
+    // ======================================================
+    // EVENT LISTENERS
+    // ======================================================
+    document.getElementById('start-btn').addEventListener('click', () => {
+        running = !running;
+        document.getElementById('start-btn').textContent = running ? 'Pause' : 'Start';
+    });
+
+    document.getElementById('reset-btn').addEventListener('click', () => {
+        time=0; running=false;
+        document.getElementById('start-btn').textContent = 'Start';
+        particles.forEach(p => {
+            p.coh=1; p.scramble=0; p.entangle=0;
+            p.el.className='particle particle-coherent';
+            p.el.style.opacity=1;
+        });
+        document.getElementById('entanglement').innerHTML='';
+        updateDisplay();
+    });
+
+    document.getElementById('export-btn').addEventListener('click', () => {
+        const model = new Model(mass);
+        const data = {
+            mode, mass, distance_rs: dist,
+            schwarzschild_radius_m: model.rs,
+            time,
+            totalInfo: (mode==='classical' ?
+                particles.reduce((s,p)=>s+p.coh,0)/particles.length : 1)*100,
+            entropy: particles.reduce((s,p) => {
+                if(mode==='classical') return s+(-p.coh*Math.log(p.coh+.01));
+                if(mode==='scramble')  return s+p.scramble;
+                return s+p.entangle*.5;
+            },0)/particles.length,
+            decoherenceRate: model.rate(dist),
+            hawkingTemp_K: model.hawking(),
+            timeDilationFactor: dist>1 ? 1/Math.sqrt(1-1/dist) : Infinity
+        };
+        const blob = new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+        const url  = URL.createObjectURL(blob);
+        const a    = document.createElement('a');
+        a.href=url; a.download=`blackhole_${mode}_data.json`; a.click();
+        URL.revokeObjectURL(url);
+    });
+
+    document.getElementById('mass-slider').addEventListener('input', e => {
+        mass = parseFloat(e.target.value);
+        document.getElementById('mass-value').textContent = Number(mass).toLocaleString();
+        updateChart(); updateDisplay();
+    });
+
+    document.getElementById('distance-slider').addEventListener('input', e => {
+        dist = parseFloat(e.target.value);
+        document.getElementById('distance-value').textContent = dist.toFixed(2);
+        updateDisplay();
+    });
+
+    document.getElementById('mode-classical').addEventListener('click', ()=>setMode('classical'));
+    document.getElementById('mode-scramble').addEventListener('click',  ()=>setMode('scramble'));
+    document.getElementById('mode-entangle').addEventListener('click',  ()=>setMode('entangle'));
+
+    document.addEventListener('keydown', e => {
+        switch(e.key) {
+            case ' ':       e.preventDefault(); document.getElementById('start-btn').click(); break;
+            case 'r': case 'R': e.preventDefault(); document.getElementById('reset-btn').click(); break;
+            case '1': setMode('classical'); break;
+            case '2': setMode('scramble');  break;
+            case '3': setMode('entangle');  break;
+            case 'e': case 'E': e.preventDefault(); document.getElementById('export-btn').click(); break;
+            case 'ArrowUp':
+                e.preventDefault();
+                mass = Math.min(4300000, mass+10);
+                document.getElementById('mass-slider').value=mass;
+                document.getElementById('mass-value').textContent=Number(mass).toLocaleString();
+                updateChart(); updateDisplay(); break;
+            case 'ArrowDown':
+                e.preventDefault();
+                mass = Math.max(1, mass-10);
+                document.getElementById('mass-slider').value=mass;
+                document.getElementById('mass-value').textContent=Number(mass).toLocaleString();
+                updateChart(); updateDisplay(); break;
+        }
+    });
+
+    // ======================================================
+    // INIT
+    // ======================================================
+    window.addEventListener('load', () => {
+        makeStars();
+        makeParticles();
+        makeChart();
+        updateChart();
+        updateDisplay();
+        animate();
+        console.log('%c🌌 Enhanced Quantum Black Hole Framework Loaded', 'color:#00f5ff;font-size:16px;font-weight:bold;');
+        console.log('%cKeyboard: SPACE=play/pause | R=reset | 1/2/3=modes | E=export | ↑↓=mass', 'color:#888;');
+        console.log('%cResearch by Rishav Jha | IRIS National Fair 2026', 'color:#a55eea;');
+    });
+</script>
+</body>
+</html>
