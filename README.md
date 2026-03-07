@@ -113,11 +113,8 @@ QFT in curved spacetime phenomenology
 
 ## 🚀 Quick Start
 
-### Option 1: Live Demo
 
-Visit the deployed version: **[Live Demo](#)** *(if hosted)*
-
-### Option 2: Local Usage
+### Option: Local Usage
 
 ```bash
 # Clone repository
@@ -125,11 +122,7 @@ git clone https://github.com/rishavjha8515-hub/quantum-decoherence-black-hole.gi
 cd quantum-decoherence-black-hole
 
 # Open in browser
-open black_hole_simulation.html
-
-# Or use local server
-python -m http.server 8000
-# Navigate to http://localhost:8000
+open blackhole_simulation.html
 ```
 
 **No installation required** — just open the HTML file in a modern browser.
