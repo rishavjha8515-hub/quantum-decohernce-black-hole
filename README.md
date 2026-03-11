@@ -1,274 +1,157 @@
-# 🌌 Quantum Decoherence Visualization Framework
+# Quantum Decoherence Visualization Framework
 
-**Interactive Educational Simulation of Quantum Decoherence in Extreme Gravitational Fields**
+**Interactive simulation of quantum decoherence in extreme gravitational fields**
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18604527.svg)](https://doi.org/10.5281/zenodo.18604527)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
-[![Status](https://img.shields.io/badge/Status-Active-brightgreen)]()
+DOI: [10.5281/zenodo.17781173](https://doi.org/10.5281/zenodo.17781173) · License: MIT (code) / CC BY 4.0 (docs) · Version: v3.2 (February 2026)
 
-**Latest Version:** v3.2 (February 2026)
-
-**Author:** Rishav Anand Kumar Jha ([ORCID: 0009-0008-4552-4154](https://orcid.org/0009-0008-4552-4154))  
-**Institution:** Shri L. R. Tiwari College of Science, Commerce and Arts, Mumbai, India
+Author: Rishav Anand Kumar Jha · ORCID: [0009-0008-4552-4154](https://orcid.org/0009-0008-4552-4154)
 
 ---
 
-## 🏆 Recognition
+## Where this came from
 
-- 🥈 **Silver Medal — IRIS National Science Fair 2026**
-- 📊 **Empirically Validated:** 41.5% → 82.1% learning gains (p < 0.001, Cohen's d = 2.67)
-- 🌍 **Global Reach:** 1,500+ users across 30+ countries
-- 📚 **Academic Impact:** Indexed by OpenAIRE via Zenodo,evaluated through a structured user study with 30 participants.
-- 💯 **100% of participants** reported they would recommend the tool for learning conceptual quantum decoherence.
----
+It starts at 12:43 a.m.
 
-## 📋 Overview
+Narsipada, Kandivali East, Mumbai. Everyone else is asleep. One phone. 1GB of data. And a question that arrived uninvited and refused to leave:
 
-**Quantum Decoherence Visualization Framework** is an interactive, browser-based educational tool that demonstrates how quantum coherence degrades in extreme gravitational environments near black holes.
+*If a black hole destroys everything that falls into it — where does the information go?*
 
-The simulator integrates phenomenological models grounded in established physics—including **Hawking radiation**, **gravitational tidal effects**, and **quantum vacuum fluctuations**—into a real-time interactive environment built with **HTML5, CSS3, JavaScript, and Chart.js**.
+No teacher assigned this. No lab. No physicist in the family. I just started reading — Brian Greene, Wikipedia spirals, YouTube videos with titles I barely understood. I hit the wall every self-taught person hits: quantum mechanics says particles exist in superposition, but the world I see doesn't do that. Chairs don't exist in two places. Something kills the quantum weirdness before it reaches everyday reality.
 
-**Design Philosophy:**
-- Make graduate-level quantum gravity concepts accessible to high school and undergraduate students
-- Explicitly communicate phenomenological approximations and uncertainties
-- Enable hands-on parameter space exploration
-- Clearly distinguish established physics from phenomenological estimates
+What is it?
 
----
+The Copenhagen Interpretation said measurement collapses superposition. An observer causes the wavefunction to choose. That felt like a cop-out. Who counts as an observer? Does a rock observing something collapse a wavefunction?
 
-## ✨ What's New in v3.2 (February 2026)
+Then I found decoherence. Wojciech Zurek, 1970s and 80s. The answer wasn't measurement. The answer was the *environment*.
 
-### 🔬 Empirical Validation
+Every quantum system leaks information into its surroundings with every interaction — every photon, every air molecule, every gravitational nudge. Each interaction entangles the system with the environment. The quantum interference terms get scrambled across 10²³ particles. And once information is distributed across that many degrees of freedom, it's gone. Not destroyed. Just irreversibly dispersed.
 
-Controlled pre-test/post-test assessment at IRIS National Fair 2026 with 30 participants (26 high school, 4 undergraduate):
+Then the next question arrived: what does decoherence look like near a black hole? Where time dilates, Hawking radiation is itself a quantum process, and the gravitational field is extreme enough to change how fast information leaks into the environment?
 
-- **Learning Gains:** 41.5% → 82.1% mean scores
-- **Statistical Significance:** p < 0.001
-- **Effect Size:** Cohen's d = 2.67 (very large)
-- **Key Finding:** Equally effective across diverse baseline knowledge levels
+Nobody had built a visualisation tool for this. Not for students. Not for people with curiosity and no lab.
 
-### 🚀 Research Applications
-
-Three prospective directions connecting educational visualization to frontier research:
-
-1. **Quantum Error Correction Extreme Benchmarking** - Multi-channel decoherence stress-testing
-2. **Space-Based Quantum Communication** - Gravitational effects on coherence windows
-3. **Information Complexity Modeling** - Quantum scrambling and information paradox visualization
-
-### 📚 Enhanced Documentation
-
-- Complete assessment methodology and statistical analysis (24-page paper)
-- Expanded theoretical framework with 25 academic references
-- Comprehensive limitations analysis
+So I built one.
 
 ---
 
-## ⚙️ Key Features
+## Recognition
 
-### 🎛️ Interactive Controls
+- **Silver Medal — IRIS National Science Fair 2026**
+- **Empirically validated**: 41.9% → 81.1% mean scores (n=27, p < 0.001, Cohen's d = 1.80)
+- **Global reach**: 4,500+ interactions across 30+ countries (Zenodo, COUNTER-compliant)
+- **100% recommendation rate** among study participants
 
-- **Black Hole Mass:** 1–1000 solar masses (M☉)
-- **Observer Distance:** 1.5–10 Schwarzschild radii (rs)
-- **Channel Weights:** Adjust thermal/gravitational/vacuum contributions
-- **Real-Time Updates:** <50ms parameter response
+---
 
-### 📊 Multi-Channel Decoherence Model
+## What it does
 
-**Thermal Channel (Hawking Radiation):**
+A browser-based interactive simulator that visualises how quantum coherence degrades in extreme gravitational environments near black holes. Three decoherence channels run simultaneously:
+
+**Thermal channel (Hawking radiation):**
 ```
 Γ_thermal = Γ₀ × (TH/T₀) × (rs/r)^1.5
 ```
-Dominates near horizon; inverse mass scaling
+Dominates near the horizon; scales inversely with black hole mass.
 
-**Gravitational Channel (Tidal Forces):**
+**Gravitational channel (tidal forces):**
 ```
 Γ_grav = Γ₀ × (rs/r)² × (1 + (rs/r)³)
 ```
-Captures tidal force scaling ∝ GM/r³
+Captures tidal force scaling proportional to GM/r³.
 
-**Vacuum Channel (Modified QFT):**
+**Vacuum channel (modified QFT):**
 ```
 Γ_vacuum = Γ₀ × (rs/r)^2.5 × ln(r₀/r)
 ```
-QFT in curved spacetime phenomenology
+Quantum field theory phenomenology in curved spacetime.
 
-### 🎨 Visualization Features
-
-- Particle system: Blue (coherent) → Red (decoherent) transitions
-- Black hole rendering with gravitational lensing effects
-- Hawking radiation visualization
-- Real-time coherence meter: C(t)/C₀ decay
-- Dynamic charts with explicit uncertainty bands (±50-100%)
-
-### 💻 Technical Details
-
-- **Platform:** 100% browser-based (HTML5/CSS3/JavaScript)
-- **Code:** ~1500 lines custom physics engine
-- **Visualization:** Chart.js for real-time plotting
-- **Dependencies:** Zero external requirements
-- **Compatibility:** Chrome, Firefox, Safari, Edge
+These are phenomenological models — order-of-magnitude estimates with explicit ±50-100% uncertainty bands, not rigorous QFT calculations. The tool is honest about this.
 
 ---
 
-## 🚀 Quick Start
+## Controls
 
+- Black hole mass: 1–1000 solar masses (M☉)
+- Observer distance: 1.5–10 Schwarzschild radii
+- Channel weights: adjust thermal/gravitational/vacuum contributions
+- Real-time response: <50ms parameter updates
 
-### Option: Local Usage
+Particles transition blue (coherent) → red (decoherent) as parameters change. Coherence meter shows C(t)/C₀ decay in real time.
+
+---
+
+## What this is not
+
+This is an educational tool. It is not:
+- A rigorous quantum field theory calculation
+- A quantitatively precise prediction tool
+- A treatment of rotating or charged black holes
+- Appropriate for engineering calculations or research predictions
+
+The full limitations analysis is in the paper (quantum_decoherence_v3.2.pdf, 24 pages).
+
+---
+
+## Quick start
 
 ```bash
-# Clone repository
 git clone https://github.com/rishavjha8515-hub/quantum-decoherence-black-hole.git
 cd quantum-decoherence-black-hole
-
-# Open in browser
 open blackhole_simulation.html
 ```
 
-**No installation required** — just open the HTML file in a modern browser.
+No installation. No dependencies. Just open the HTML file in a modern browser.
 
-### Usage
-
-1. Adjust black hole mass slider (1-1000 M☉)
-2. Change observer distance (1.5-10 rs)
-3. Modify channel weights if desired
-4. Observe particle color transitions and real-time plots
+**Stack:** HTML5 / CSS3 / JavaScript / Chart.js — ~1500 lines, zero external requirements.
 
 ---
 
-## ⚠️ Limitations & Disclaimers
+## Empirical validation
 
-### What This Model IS ✓
+Controlled pre-test/post-test study across two independent settings (IRIS National Fair 2026 + coaching classroom):
 
-- Educational visualization tool with empirical validation
-- Phenomenological exploration with order-of-magnitude estimates
-- Platform for conceptual understanding
-- Transparent communication of uncertainties (±50-100%)
+| Metric | Value |
+|--------|-------|
+| Participants | 27 (26 high school, 1 undergraduate) |
+| Pre-test mean | 41.9% (SD = 22.2%) |
+| Post-test mean | 81.1% (SD = 15.6%) |
+| Improvement | 39.3 percentage points (93.8% relative gain) |
+| Statistical significance | p < 0.001 (paired t-test) |
+| Effect size | Cohen's d = 1.80 (very large) |
+| Recommendation rate | 100% |
 
-### What This Model IS NOT ✗
-
-- Rigorous quantum field theory calculation
-- Quantitatively precise experimental predictions
-- Complete treatment of information recovery mechanisms
-- Treatment of rotating or charged black holes
-
-**Intended Use:** Physics education (high school through undergraduate), outreach, conceptual exploration
-
-**Not Appropriate For:** Quantitative research predictions, engineering calculations, policy decisions
-
-**See full paper (quantum_decoherence_v3.2.pdf) for detailed limitations analysis.**
+Full methodology and analysis in the paper.
 
 ---
 
-## 📄 Full Documentation
-
-For complete details, please see:
-
-📝 **[quantum_decoherence_v3.2.pdf](docs/quantum_decoherence_v3.2.pdf)** (24 pages)
-
-Includes:
-- Theoretical background and equation derivations
-- Complete phenomenological methodology
-- Empirical validation study design and results
-- Seven computational figures
-- Exploratory research applications
-- Comprehensive limitations and future work
-- 25 academic references
-
----
-
-## 📚 Citation
-
-If you use this framework in educational or research contexts, please cite:
+## Citation
 
 **APA:**
-```
-Jha, R. A. K. (2026). Interactive Framework for Visualizing Quantum Decoherence 
-in Extreme Gravitational Fields: A Phenomenological Approach to Black Hole Physics 
-and Quantum Information Science (Version 3.2). Zenodo. 
-https://doi.org/10.5281/zenodo.18604527
-```
+Jha, R. A. K. (2026). *Interactive Framework for Visualizing Quantum Decoherence in Extreme Gravitational Fields* (Version 3.2). Zenodo. https://doi.org/10.5281/zenodo.17781173
 
 **BibTeX:**
 ```bibtex
 @software{jha2026quantum,
-  author       = {Jha, Rishav Anand Kumar},
-  title        = {Interactive Framework for Visualizing Quantum Decoherence 
-                  in Extreme Gravitational Fields},
-  month        = feb,
-  year         = 2026,
-  publisher    = {Zenodo},
-  version      = {3.2},
-  doi          = {10.5281/zenodo.18604527},
-  url          = {https://doi.org/10.5281/zenodo.18604527}
+  author    = {Jha, Rishav Anand Kumar},
+  title     = {Interactive Framework for Visualizing Quantum Decoherence
+               in Extreme Gravitational Fields},
+  month     = feb,
+  year      = 2026,
+  publisher = {Zenodo},
+  version   = {3.2},
+  doi       = {10.5281/zenodo.17781173},
+  url       = {https://doi.org/10.5281/zenodo.17781173}
 }
 ```
 
 ---
 
-## 📜 License
+## Contact
 
-- **Source Code:** [MIT License](LICENSE)
-- **Documentation:** [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+Rishav Anand Kumar Jha · rishavjha8515@gmail.com · ORCID: 0009-0008-4552-4154
 
-Free to use, modify, and distribute with attribution.
-
----
-
-## 🤝 Contributing
-
-Contributions welcome! Areas of interest:
-
-**Physics:** Kerr black holes, improved calibration, semiclassical corrections  
-**Technical:** Performance optimization, mobile responsiveness, accessibility  
-**Educational:** Tutorial modules, assessment tools, teacher guides
-
-**Process:**
-1. Fork repository
-2. Create feature branch
-3. Commit changes
-4. Open Pull Request
+Bug reports: GitHub Issues · Collaboration: email with subject "Collaboration: [Topic]"
 
 ---
 
-## 🙏 Acknowledgments
-
-**Thanks to:**
-- IRIS National Fair 2026 organizers for facilitating empirical validation
-- 30 study participants for their engagement and feedback
-- Online physics education community for inspiration
-- Open-source maintainers (Chart.js, Zenodo, OpenAIRE, GitHub)
-
----
-
-## 📬 Contact
-
-**Rishav Anand Kumar Jha**
-
-📧 Email: rishavjha8515@gmail.com  
-🔗 ORCID: [0009-0008-4552-4154](https://orcid.org/0009-0008-4552-4154)  
-🐙 GitHub: [@rishavjha8515-hub](https://github.com/rishavjha8515-hub)  
-📚 Zenodo: [10.5281/zenodo.18604527](https://doi.org/10.5281/zenodo.18604527)
-
-**Feedback:**
-- Bug reports: [GitHub Issues](https://github.com/rishavjha8515-hub/quantum-decoherence-black-hole/issues)
-- General inquiries: rishavjha8515@gmail.com
-- Collaboration: Email with subject "Collaboration: [Topic]"
-
----
-
-<div align="center">
-
-**Made with 🌌 for physics education and quantum information science**
-
-**© 2026 Rishav Anand Kumar Jha · MIT License**
-
-[⬆ Back to Top](#-quantum-decoherence-visualization-framework)
-
-</div>
-
-**© 2026 Rishav Anand Kumar Jha. Released under MIT License.**
-
-[⬆ Back to Top](#-quantum-decoherence-visualization-framework)
-
-</div>
+*MIT License (code) · CC BY 4.0 (documentation) · © 2026 Rishav Anand Kumar Jha*
