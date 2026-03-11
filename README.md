@@ -12,7 +12,7 @@ Author: Rishav Anand Kumar Jha · ORCID: [0009-0008-4552-4154](https://orcid.org
 
 It starts at 12:43 a.m.
 
-Narsipada, Kandivali East, Mumbai. Everyone else is asleep. One phone. 1GB of data. And a question that arrived uninvited and refused to leave:
+Mumbai. Everyone else is asleep. One phone. 1GB of data. And a question that arrived uninvited and refused to leave:
 
 *If a black hole destroys everything that falls into it — where does the information go?*
 
