@@ -29,12 +29,12 @@
             overflow-x: hidden;
         }
 
-        /* ---- starfield ---- */
+       
         .stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
         .star  { position: absolute; border-radius: 50%; background: #fff; animation: twinkle 3s infinite; }
         @keyframes twinkle { 0%,100% { opacity:.2; } 50% { opacity:.9; } }
 
-        /* ---- nebula glow behind everything ---- */
+        
         body::before {
             content:'';
             position:fixed; inset:0; z-index:0;
@@ -47,7 +47,7 @@
 
         .container { position:relative; z-index:1; max-width:1640px; margin:0 auto; padding:20px; }
 
-        /* ---- title ---- */
+      
         .title {
             text-align: center;
             font-family: 'Space Mono', monospace;
@@ -65,7 +65,7 @@
 
         .subtitle { text-align:center; font-size:.9rem; color:#666; margin-bottom:1.2rem; letter-spacing:.5px; }
 
-        /* ======== SCHWARZSCHILD EQUATION BOX ======== */
+   
         .rs-equation-box {
             background: linear-gradient(135deg, rgba(0,245,255,.07) 0%, rgba(160,40,220,.05) 100%);
             border: 1.5px solid rgba(0,245,255,.35);
@@ -94,7 +94,7 @@
         }
         .rs-eq-desc strong { color: var(--cyan); }
 
-        /* ======== INFO BANNER ======== */
+       
         .info-banner {
             background: rgba(0,245,255,.07);
             border: 1.5px solid rgba(0,245,255,.3);
@@ -107,7 +107,7 @@
         }
         .banner-title { color: var(--cyan); font-weight: 600; margin-bottom: .3rem; }
 
-        /* ======== PHYSICS CONTEXT RIBBON ======== */
+   
         .physics-ribbon {
             display: flex;
             gap: 1rem;
@@ -130,7 +130,7 @@
         }
         .ribbon-item span { color: var(--yellow); font-weight: 700; }
 
-        /* ======== LAYOUT ======== */
+   
         .main-grid {
             display: grid;
             grid-template-columns: 1fr 360px;
@@ -146,7 +146,7 @@
             backdrop-filter: blur(12px);
         }
 
-        /* ======== MODE BUTTONS ======== */
+   
         .mode-selector { display:flex; gap:.5rem; margin-bottom:1.2rem; justify-content:center; flex-wrap:wrap; }
         .mode-btn {
             padding: 9px 18px;
@@ -167,7 +167,7 @@
         }
         .mode-btn:hover:not(.active) { background: rgba(255,255,255,.09); }
 
-        /* ======== VISUALIZATION ======== */
+        
         #viz-container {
             height: 460px;
             background: radial-gradient(circle at center, rgba(0,0,0,.9) 0%, rgba(0,0,30,.95) 100%);
@@ -176,7 +176,7 @@
             border: 1.5px solid rgba(0,245,255,.15);
         }
 
-        /* Horizon ring on viz */
+     
         .horizon-ring {
             position: absolute;
             top: 50%; left: 50%;
@@ -245,7 +245,7 @@
             pointer-events: none; z-index:1;
         }
 
-        /* ======== WARNING BOX ======== */
+   
         #horizon-warning {
             display: none;
             background: rgba(255,71,87,.12);
@@ -258,7 +258,7 @@
             text-align: center;
         }
 
-        /* ======== BUTTONS ======== */
+    
         .btn {
             padding: 11px 22px;
             border: none; border-radius: 11px;
@@ -275,7 +275,7 @@
         .btn-export { background: linear-gradient(45deg, var(--purple), #7030a0); color: #fff; }
         .btn:hover  { transform: translateY(-2px); filter: brightness(1.1); }
 
-        /* ======== SLIDERS ======== */
+    
         .slider-group { margin-bottom: 1.2rem; }
         .slider-label { display:block; font-weight:500; margin-bottom:.45rem; color:#ccd; font-size:.88rem; }
         .slider { width:100%; height:5px; border-radius:3px; background:#16213e; outline:none; accent-color: var(--cyan); }
@@ -291,7 +291,7 @@
         .msc-inter   { border-color: var(--yellow)!important; color: var(--yellow); }
         .msc-super   { border-color: var(--purple)!important; color: var(--purple); }
 
-        /* ======== PRESETS ======== */
+       
         .preset-btn {
             padding: .5rem .6rem;
             background: rgba(0,245,255,.07);
@@ -307,7 +307,7 @@
         }
         .preset-btn:hover { background: rgba(0,245,255,.18); border-color: var(--cyan); }
 
-        /* ======== STATS GRID ======== */
+    
         .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: .8rem; }
         .stat-item {
             text-align: center; padding: .9rem .5rem;
@@ -318,13 +318,13 @@
         .stat-label { font-size: .72rem; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; margin-bottom: .4rem; }
         .stat-value { font-size: 1rem; font-weight: 700; font-family: 'Space Mono', monospace; }
 
-        /* ======== CHANNEL BARS ======== */
+   
         .channel-item { margin-bottom: .9rem; }
         .channel-label { display:flex; justify-content:space-between; font-size:.85rem; margin-bottom:.3rem; }
         .channel-bar  { height:7px; background:rgba(255,255,255,.08); border-radius:4px; overflow:hidden; }
         .channel-fill { height:100%; transition:width .3s ease; border-radius:4px; }
 
-        /* ======== MODE DESCRIPTION ======== */
+
         .mode-description {
             background: rgba(255,193,7,.07);
             border: 1.5px solid rgba(255,193,7,.3);
@@ -335,16 +335,16 @@
         .mode-description h4 { color: var(--yellow); margin-bottom:.4rem; font-size:.88rem; }
         .mode-description p  { font-size:.82rem; line-height:1.65; opacity:.9; }
 
-        /* ======== LEGEND ======== */
+        
         .legend { background:rgba(0,0,0,.25); border-radius:9px; padding:.9rem; margin-top:1rem; }
         .legend-item { display:flex; align-items:center; margin:.45rem 0; font-size:.83rem; }
         .legend-color { width:11px; height:11px; border-radius:50%; margin-right:.5rem; flex-shrink:0; }
 
-        /* ======== COHERENCE BAR ======== */
+   
         .coh-bar-wrap { height:11px; background:rgba(255,255,255,.08); border-radius:6px; overflow:hidden; }
         #coh-bar { height:100%; background:linear-gradient(90deg,var(--green),#00b359); width:100%; transition:width .3s; border-radius:6px; }
 
-        /* ======== CHART SECTION ======== */
+       
         .chart-toggle {
             display: flex; gap: .5rem; margin-bottom: 1rem; justify-content: center; flex-wrap: wrap;
         }
@@ -366,7 +366,7 @@
         .toggle-btn.active.grav     { color: var(--yellow); border-color: var(--yellow); }
         .toggle-btn.active.vacuum   { color: var(--teal);   border-color: var(--teal);   }
 
-        /* ======== PHYSICS PANELS ======== */
+   
         .info-cards {
             display: grid; grid-template-columns: repeat(3,1fr);
             gap: 1rem; margin-bottom: 1.5rem;
@@ -403,7 +403,7 @@
         .limitations-panel li { font-size:.85rem; line-height:1.8; color:#cbb; }
         .limitations-panel li strong { color: #dcc; }
 
-        /* ======== TIME DILATION TABLE ======== */
+        
         .dilation-table {
             width: 100%; border-collapse: collapse;
             font-family: 'Space Mono', monospace;
@@ -436,7 +436,7 @@
     <h1 class="title">QUANTUM BLACK HOLE DECOHERENCE</h1>
     <p class="subtitle">Interactive Framework · Research by Rishav Jha · IRIS National Fair 2026</p>
 
-    <!-- ① SCHWARZSCHILD EQUATION BOX -->
+
     <div class="rs-equation-box">
         <div>
             <div style="font-size:.72rem;color:#778;margin-bottom:.3rem;text-transform:uppercase;letter-spacing:1px;">Schwarzschild Radius</div>
@@ -447,24 +447,22 @@
         </div>
     </div>
 
-    <!-- PHYSICS RIBBON -->
+ 
     <div class="physics-ribbon">
         <div class="ribbon-item">G = <span>6.674 × 10⁻¹¹</span> m³ kg⁻¹ s⁻²</div>
         <div class="ribbon-item">c = <span>2.998 × 10⁸</span> m/s</div>
         <div class="ribbon-item">ℏ = <span>1.055 × 10⁻³⁴</span> J·s</div>
         <div class="ribbon-item">k<sub>B</sub> = <span>1.381 × 10⁻²³</span> J/K</div>
     </div>
-
-    <!-- INFO BANNER -->
     <div class="info-banner">
         <div class="banner-title">🔬 Information Paradox Modes</div>
         <p>Toggle between classical (information lost) and modern (information scrambled / holographic) interpretations. Distance axis is normalized to Schwarzschild radii — the event horizon is at r/r<sub>s</sub> = 1.</p>
     </div>
 
-    <!-- MAIN GRID -->
+   
     <div class="main-grid">
 
-        <!-- LEFT: VISUALIZATION -->
+       
         <div class="panel">
             <div class="mode-selector">
                 <button class="mode-btn" id="mode-classical">❌ Classical Loss</button>
@@ -482,7 +480,7 @@
                 <div id="entanglement"></div>
             </div>
 
-            <!-- ⑥ UNPHYSICAL VALUE WARNING -->
+       
             <div id="horizon-warning">
                 ⚠️ Inside or near the event horizon (r &lt; 1.05 r<sub>s</sub>) — classical simulation breaks down. General relativity requires a full quantum gravity treatment.
             </div>
@@ -515,7 +513,7 @@
                     <input type="range" id="distance-slider" class="slider" min="1.05" max="10" step="0.05" value="3">
                 </div>
 
-                <!-- ⑦ REAL BH PRESETS -->
+         
                 <div style="padding:.9rem;background:rgba(255,255,255,.02);border-radius:9px;border:1px solid var(--border);">
                     <h4 style="color:var(--cyan);margin-bottom:.6rem;text-align:center;font-size:.85rem;letter-spacing:.5px;">🌌 Real Black Hole Presets</h4>
                     <div style="display:grid;grid-template-columns:1fr 1fr;gap:.4rem;">
@@ -528,7 +526,7 @@
             </div>
         </div>
 
-        <!-- RIGHT: CONTROLS & STATS -->
+      
         <div>
             <div class="panel">
                 <h3 style="color:var(--cyan);text-align:center;margin-bottom:1rem;font-size:.95rem;letter-spacing:.5px;">Current Mode</h3>
@@ -538,7 +536,7 @@
                     <p>Information isn't destroyed — it becomes scrambled across Hawking radiation. Yellow particles show quantum info spreading into correlations. Total information = 100%.</p>
                 </div>
 
-                <!-- STATS -->
+              
                 <div class="stats-grid">
                     <div class="stat-item">
                         <div class="stat-label" style="color:var(--cyan);">Time</div>
@@ -552,7 +550,6 @@
                         <div class="stat-label" style="color:var(--yellow);">Horizon (r<sub>s</sub>)</div>
                         <div class="stat-value" id="horizon-val">29.5 km</div>
                     </div>
-                    <!-- ⑧ HAWKING TEMPERATURE -->
                     <div class="stat-item">
                         <div class="stat-label" style="color:var(--red);">Hawking T<sub>H</sub></div>
                         <div class="stat-value" id="hawking-val">6.17e-9 K</div>
@@ -561,19 +558,19 @@
                         <div class="stat-label" style="color:var(--purple);">Entropy</div>
                         <div class="stat-value" id="entropy-val">0.000</div>
                     </div>
-                    <!-- ③ DISTANCE IN r/rs -->
+               
                     <div class="stat-item">
                         <div class="stat-label" style="color:var(--teal);">r / r<sub>s</sub></div>
                         <div class="stat-value" id="dist-val">3.0</div>
                     </div>
-                    <!-- ⑤ TIME DILATION -->
+             
                     <div class="stat-item" style="grid-column:1/-1;">
                         <div class="stat-label" style="color:var(--orange);">Gravitational Time Dilation &nbsp; 1/√(1 − r<sub>s</sub>/r)</div>
                         <div class="stat-value" id="dilation-val" style="font-size:.9rem;">1.095×</div>
                     </div>
                 </div>
 
-                <!-- CHANNEL CONTRIBUTIONS -->
+         
                 <div style="margin-top:1.2rem;padding:.9rem;background:rgba(255,255,255,.02);border-radius:9px;">
                     <h4 style="color:var(--purple);margin-bottom:.9rem;text-align:center;font-size:.85rem;">Decoherence Channels</h4>
 
@@ -604,7 +601,7 @@
                     <p style="font-size:.72rem;color:#667;margin-top:.5rem;text-align:center;">Gravitational term models tidal curvature gradients (not gravity itself)</p>
                 </div>
 
-                <!-- LEGEND -->
+                
                 <div class="legend">
                     <h4 style="margin-bottom:.5rem;font-size:.85rem;color:#aab;">Particle States:</h4>
                     <div class="legend-item"><div class="legend-color" style="background:var(--cyan);box-shadow:0 0 6px var(--cyan);"></div><span id="legend-blue">Unscrambled quantum info</span></div>
@@ -613,7 +610,7 @@
                 </div>
             </div>
 
-            <!-- COHERENCE BAR -->
+        
             <div class="panel" style="margin-top:1rem;">
                 <h4 style="color:var(--green);text-align:center;margin-bottom:.8rem;font-size:.88rem;">Quantum Coherence Level</h4>
                 <div class="coh-bar-wrap"><div id="coh-bar"></div></div>
@@ -622,7 +619,7 @@
                 </div>
             </div>
 
-            <!-- ⑤ TIME DILATION TABLE -->
+     
             <div class="panel" style="margin-top:1rem;">
                 <h4 style="color:var(--orange);text-align:center;margin-bottom:.6rem;font-size:.85rem;">⏱ Gravitational Time Dilation Guide</h4>
                 <p style="font-size:.75rem;color:#778;text-align:center;margin-bottom:.5rem;">τ = t · √(1 − r<sub>s</sub>/r) &nbsp;&nbsp; remote vs local time</p>
@@ -641,7 +638,6 @@
         </div>
     </div>
 
-    <!-- ⑧ HAWKING TEMPERATURE CONTEXT -->
     <div class="panel" style="margin-bottom:1.5rem;background:rgba(255,71,87,.05);border-color:rgba(255,71,87,.2);">
         <h3 style="color:var(--red);text-align:center;margin-bottom:.8rem;font-size:.95rem;">🌡 Hawking Radiation Temperature &nbsp;  T<sub>H</sub> = ℏc³ / (8πGMk<sub>B</sub>)</h3>
         <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;text-align:center;">
@@ -669,7 +665,7 @@
         <p style="text-align:center;margin-top:.8rem;font-size:.78rem;color:#667;">Counterintuitive: <em>more massive black holes are colder</em> — T<sub>H</sub> ∝ 1/M</p>
     </div>
 
-    <!-- PARADOX CARDS -->
+
     <div class="info-cards">
         <div class="info-card" style="background:rgba(255,71,87,.07);border-color:rgba(255,71,87,.3);">
             <h4 style="color:var(--red);">❌ Classical (Hawking 1974)</h4>
@@ -685,16 +681,16 @@
         </div>
     </div>
 
-    <!-- ⑨ IMPROVED EXPLANATION + CHART WITH TOGGLE -->
+    
     <div class="panel" style="margin-bottom:1.5rem;">
         <h3 style="text-align:center;color:var(--red);margin-bottom:.5rem;font-size:1rem;">Decoherence Rate vs Distance (r / r<sub>s</sub>)</h3>
 
-        <!-- ⑨ IMPROVED EXPLANATION TEXT -->
+        
         <p style="font-size:.84rem;color:#9ab;text-align:center;max-width:900px;margin:0 auto .9rem;line-height:1.75;">
             In Schwarzschild spacetime, increasing spacetime curvature near the event horizon amplifies environmental interactions that drive quantum decoherence. This simulator visualizes simplified phenomenological scaling relationships between distance (<em>r/r<sub>s</sub></em>), black hole mass, and decoherence rate. The dashed vertical line marks the event horizon — where escape velocity equals <em>c</em> and classical simulation ceases to be valid.
         </p>
 
-        <!-- ⑩ CHART TOGGLE -->
+      
         <div class="chart-toggle">
             <button class="toggle-btn active total"   id="tog-total"   onclick="toggleDataset('total')">   ● Total Rate</button>
             <button class="toggle-btn thermal"         id="tog-thermal" onclick="toggleDataset('thermal')"> ● Thermal</button>
@@ -708,11 +704,11 @@
         </p>
     </div>
 
-    <!-- METHODOLOGY -->
+ 
     <div class="methodology-panel">
         <h3>Theoretical Methodology</h3>
 
-        <!-- ⑨ IMPROVED PHYSICS PARAGRAPH -->
+     
         <p>
             In Schwarzschild spacetime, the metric near the event horizon generates tidal gravitational gradients that scale as ∝ M/r³. These increasing tidal forces near the horizon can amplify environmental interactions causing quantum decoherence — the irreversible loss of phase coherence in a quantum superposition. This simulator visualizes simplified phenomenological scaling laws connecting distance, black hole mass, and decoherence rate across three distinct physical channels.
         </p>
